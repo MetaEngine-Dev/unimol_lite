@@ -6,7 +6,8 @@
 
 ```shell
 # 安装依赖
-pip install git+https://github.com/macroversus/unimol_lite.git
+git clone https://github.com/macroversus/unimol_lite.git
+pip install unimol_lite
 ```
 
 ## 使用
@@ -17,7 +18,7 @@ pip install git+https://github.com/macroversus/unimol_lite.git
 from unimol_lite.model import UniMolModel, UniMolTokenizer
 from unimol_lite.data import smiles2unimolitem
 
-model = UniMolModel.from_pretrained("./base_unimol") # 替换成你repo中的base_unimol目录路径
+model = UniMolModel.from_pretrained("unimol_lite/base_unimol") # 替换成你repo中的base_unimol目录路径
 test_smiles = "Nc1nc2c(ncn2[C@@H]2O[C@H](CO)[C@@H](O)[C@H]2O)c(=O)[nH]1"
 item = smiles2unimolitem(smiles=test_smiles)
 encoder_rep, encoder_pair_rep = model(**item)
@@ -29,7 +30,7 @@ encoder_rep, encoder_pair_rep = model(**item)
 from unimol_lite.model import UniMolModel, UniMolTokenizer
 from unimol_lite.data import generate_unimolitem, smiles2coords
 
-model = UniMolModel.from_pretrained("./base_unimol") # 替换成你repo中的base_unimol目录路径
+model = UniMolModel.from_pretrained("unimol_lite/base_unimol") # 替换成你repo中的base_unimol目录路径
 test_smiles = "Nc1nc2c(ncn2[C@@H]2O[C@H](CO)[C@@H](O)[C@H]2O)c(=O)[nH]1"
 atoms, coordinates_list = smiles2coords(test_smiles, 1) # 生成Atoms和coordinate
 coordinates = coordinates_list[0] # 选择其中一个构象
