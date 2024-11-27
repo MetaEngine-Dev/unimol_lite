@@ -6,8 +6,7 @@
 
 ```shell
 # 安装依赖
-git clone https://github.com/macroversus/unimol_lite.git
-pip install ./unimol_lite
+git clone https://github.com/macroversus/unimol_lite.git && pip install ./unimol_lite
 ```
 
 ## 使用
