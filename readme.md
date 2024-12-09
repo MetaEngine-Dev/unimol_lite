@@ -2,6 +2,12 @@
 
 这是一个轻量级的UniMol模型，用于快速的SMILES表征
 
+部分用户可能出现safetensors_rust.SafetensorError: Error while deserializing header: HeaderTooLarge
+
+这是因为没有安装git lfs或者网络问题导致的模型文件不完整。
+
+请参考文档底部的[常见错误](#常见错误)部分，了解解决方法。
+
 ## 安装
 
 ```shell
