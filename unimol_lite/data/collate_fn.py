@@ -79,7 +79,7 @@ def unimol_collate_fn(batch: List[Dict[str, any]], tokenizer: UniMolTokenizer = 
     """_summary_
 
     Args:
-        batch (List[Dict[str, any]]): contains the following keys: src_tokens, src_coord, src_distance, src_edge_type
+        batch (List[Dict[str, any]]): list of dict(s) containing the following keys: src_tokens, src_coord, src_distance, src_edge_type
             - src_tokens: tokenized atoms with cls and sep tokens
             - src_distance: distance matrix of atoms
             - src_coord: coordinates of atoms
