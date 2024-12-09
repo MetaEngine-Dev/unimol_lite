@@ -14,7 +14,7 @@ git clone https://github.com/macroversus/unimol_lite.git && pip install ./unimol
 ### 输入SMILES获得表征（推荐在Inference时使用）
 
 ```python
-from unimol_lite.model import UniMolModel, UniMolTokenizer
+from unimol_lite.model import UniMolModel
 from unimol_lite.data import smiles2unimolitem
 
 model = UniMolModel.from_pretrained("unimol_lite/base_unimol") # 替换成你repo中的base_unimol目录路径
@@ -26,7 +26,7 @@ encoder_rep, encoder_pair_rep = model(**item)
 ### 输入预先生成的atoms和coordinates获得表征（推荐在Uni-Mol微调中使用）
 
 ```python
-from unimol_lite.model import UniMolModel, UniMolTokenizer
+from unimol_lite.model import UniMolModel
 from unimol_lite.data import generate_unimolitem, smiles2coords
 
 model = UniMolModel.from_pretrained("unimol_lite/base_unimol") # 替换成你repo中的base_unimol目录路径
