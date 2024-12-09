@@ -107,4 +107,4 @@ lmdb_dataloader = DataLoader(lmdb_dataset, batch_size=1, shuffle=False, collate_
 
 国内网络受限的用户可以手动下载base_unimol/model.safetensors文件
 
-然后替换掉base_unimol目录下的model.safetensors文件即可
+然后替换掉本地克隆中的base_unimol目录下的model.safetensors文件即可
