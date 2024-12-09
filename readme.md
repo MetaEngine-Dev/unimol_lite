@@ -88,3 +88,23 @@ lmdb_dataset = LMDBDataset(
 
 lmdb_dataloader = DataLoader(lmdb_dataset, batch_size=1, shuffle=False, collate_fn=lmdb_dataset.collater)
 ```
+
+## 常见错误
+
+#### safetensors_rust.SafetensorError: Error while deserializing header: HeaderTooLarge
+
+原因：没有安装git lfs，下载的model.safetensors只是一个指向大文件的指针，可以通过以下方式安装：
+
+1. macOS: `brew install git-lfs`
+
+2. Ubuntu: `sudo apt-get install git-lfs`
+
+3. Windows: 下载安装包：https://git-lfs.github.com/
+
+4. 非root用户：推荐使用conda `conda install conda-forge::git-lfs`
+
+然后执行`git lfs install`，再执行`git lfs pull`即可
+
+国内网络受限的用户可以手动下载base_unimol/model.safetensors文件
+
+然后替换掉base_unimol目录下的model.safetensors文件即可
