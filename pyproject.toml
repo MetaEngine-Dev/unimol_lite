@@ -24,6 +24,7 @@ dependencies = [
     "transformers",
     "scipy",
     "numpy",
+    "lmdb",
 ]
 
 [tool.setuptools.package-data]
