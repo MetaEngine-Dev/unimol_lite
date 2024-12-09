@@ -16,7 +16,7 @@ from .config import UniMolConfig
 
 class UniMolModel(PreTrainedModel):
     config_class = UniMolConfig
-    def __init__(self, configs: Dict[str, Any]):
+    def __init__(self, configs: UniMolConfig):
         super().__init__(configs)
         self.configs = configs
         tokenizer = UniMolTokenizer(clean_up_tokenization_spaces=True)
