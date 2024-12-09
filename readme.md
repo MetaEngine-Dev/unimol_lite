@@ -13,9 +13,9 @@
 ```shell
 # 安装依赖
 git clone https://github.com/macroversus/unimol_lite.git && pip install ./unimol_lite
-# 如果因为国内网络问题，可以参考下面的方式忽略大文件
+# 如果因为国内网络问题，可以参考下面的方式忽略大文件，并采用ssh途径下载
 # 然后再通过其他方式下载完整的base_unimol/model.safetensors模型文件
-# GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/macroversus/unimol_lite.git && pip install ./unimol_lite
+# GIT_LFS_SKIP_SMUDGE=1 git clone git@github.com:macroversus/unimol_lite.git && pip install ./unimol_lite
 ```
 
 ## 使用
