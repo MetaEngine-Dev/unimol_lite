@@ -4,14 +4,8 @@ UniMol-Lite 是 [Uni-Mol](https://github.com/dptech-corp/Uni-Mol) 的简化版�
 
 ## 安装
 
-```bash
-# Clone the repository
-git clone git@github.com:macroversus/unimol_lite.git
-cd unimol_lite
-
-# Install the package
-pip install -e .
-
+```shell
+pip install ssh://git@github.com/macroversus/unimol_lite.git
 # Download pre-trained models
 wget http://ohgy1146835.bohrium.tech:50001/download/base_unimol.zip
 unzip base_unimol.zip
