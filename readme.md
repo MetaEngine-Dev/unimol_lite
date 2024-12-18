@@ -1,119 +1,156 @@
-# UniMol Lite
+# UniMol-Lite
 
-这是一个轻量级的UniMol模型，用于快速的SMILES表征
-
-部分用户可能出现safetensors_rust.SafetensorError: Error while deserializing header: HeaderTooLarge
-
-这是因为没有安装git lfs或者网络问题导致的模型文件不完整。
-
-请参考文档底部的[常见错误](#常见错误)部分，了解解决方法。
+UniMol-Lite 是 [Uni-Mol](https://github.com/dptech-corp/Uni-Mol) 的简化版本实现。
 
 ## 安装
 
-```shell
-# 安装依赖
-git clone https://github.com/macroversus/unimol_lite.git && pip install ./unimol_lite
-# 如果因为国内网络问题，可以参考下面的方式忽略大文件，并采用ssh途径下载
-# 然后再通过其他方式下载完整的base_unimol/model.safetensors模型文件
-# GIT_LFS_SKIP_SMUDGE=1 git clone git@github.com:macroversus/unimol_lite.git && pip install ./unimol_lite
+```bash
+# Clone the repository
+git clone git@github.com:macroversus/unimol_lite.git
+cd unimol_lite
+
+# Install the package
+pip install -e .
+
+# Download pre-trained models
+wget http://ohgy1146835.bohrium.tech:50001/download/base_unimol.zip
+unzip base_unimol.zip
 ```
 
-## 使用
+## 预训练模型
 
-### 输入SMILES获得表征（推荐在Inference时使用）
+预训练模型文件组织如下:
+
+```
+base_unimol/
+|-- config.json
+`-- model.safetensors
+```
+
+## 使用示例
+
+### 1. 准备数据
+
+#### 方式一: 直接使用 SMILES
 
 ```python
-from unimol_lite.model import UniMolModel
 from unimol_lite.data import smiles2unimolitem
 
-model = UniMolModel.from_pretrained("unimol_lite/base_unimol") # 替换成你repo中的base_unimol目录路径
-test_smiles = "Nc1nc2c(ncn2[C@@H]2O[C@H](CO)[C@@H](O)[C@H]2O)c(=O)[nH]1"
-item = smiles2unimolitem(smiles=test_smiles)
-encoder_rep, encoder_pair_rep = model(**item)
+# 转换单个SMILES
+smiles = "CC(=O)OC1=CC=CC=C1C(=O)O"
+item = smiles2unimolitem(smiles)
 ```
 
-### 输入预先生成的atoms和coordinates获得表征（推荐在Uni-Mol微调中使用）
+#### 方式二: 使用 LMDB 数据集
+
+1. 将 SMILES 转换为 LMDB:
 
 ```python
-from unimol_lite.model import UniMolModel
-from unimol_lite.data import generate_unimolitem, smiles2coords
+import pandas as pd
 
-model = UniMolModel.from_pretrained("unimol_lite/base_unimol") # 替换成你repo中的base_unimol目录路径
-test_smiles = "Nc1nc2c(ncn2[C@@H]2O[C@H](CO)[C@@H](O)[C@H]2O)c(=O)[nH]1"
-atoms, coordinates_list = smiles2coords(test_smiles, 1) # 生成Atoms和coordinate
-coordinates = coordinates_list[0] # 选择其中一个构象
-item = generate_unimolitem(atoms=atoms, coordinates=coordinates)
-encoder_rep, encoder_pair_rep = model(**item)
+# 读取CSV文件中的SMILES
+df = pd.read_csv("examples/example_prepare_lmdb.csv")
 
+# 使用脚本批量转换
+python examples/prepare_lmdb.py -i input.csv -o output.lmdb -c SMILES_COLUMN
 ```
 
-### 输出说明
-
-***encoder_rep***: (batch_size, atoms_count, hidden_size)
-
-***encoder_rep***: (batch_size, atoms_count, atoms_count， hidden_size)
-
-上述atoms_count: 不包括H, 第一个为cls，最后一个为sep
-
-一般而言，你可能倾向于取encoder_rep[:, 0, :]作为整个SMILES的表征
-
-## Dataset样例
-
-本项目提供了两个简单的Dataset样例，供您参考使用
-
-### BaseDataset
-
-```python
-from unimol_lite.data import BaseDataset
-from torch.utils.data import DataLoader
-
-base_dataset = BaseDataset(
-    smiles_lists: list = [...], # SMILES列表
-)
-# 可以使用dataset自带的collater对数据进行对齐处理
-base_dataloader = DataLoader(base_dataset, batch_size=1, shuffle=False, collate_fn=base_dataset.collater)
-```
-
-### LMDBDataset
-
-本项目提供了一个预先生成LMDB数据的样例examples/prepare_lmdb.py，以及对应的输入文件examples/example_prepare_lmdb.csv
+2. 使用 LMDBDataset 加载数据:
 
 ```python
 from unimol_lite.data import LMDBDataset
 from torch.utils.data import DataLoader
 
-#lmdb中的数据格式为：
-# {
-#     "lmdb_key": {
-#         "item": {...}, # 必须包含——利用unimol_lite.data.generate_unimolitem产生的item
-#         "other_keys_you_need": {...}，
-#         ...
-#     }
-# }
-lmdb_dataset = LMDBDataset(
-    lmdb_path: str = "path/to/your/lmdb", # LMDB路径
-    included_keys: list = [b"0", b"1", ...], # 用于此dataset的lmdb中的keys
-)
+# 创建数据集
+dataset = LMDBDataset("output.lmdb")
 
-lmdb_dataloader = DataLoader(lmdb_dataset, batch_size=1, shuffle=False, collate_fn=lmdb_dataset.collater)
+# 创建数据加载器
+dataloader = DataLoader(
+    dataset,
+    batch_size=32,
+    shuffle=True,
+    num_workers=4,
+    collate_fn=dataset.collater
+)
 ```
 
-## 常见错误
+#### 输入数据格式
+- SMILES: 标准SMILES格式的分子字符串
+- CSV文件: 包含SMILES列的CSV文件,可通过`-c`参数指定列名
 
-#### safetensors_rust.SafetensorError: Error while deserializing header: HeaderTooLarge
+#### 中间数据格式
+LMDB数据集中每个条目包含:
+```python
+{
+    "smiles": str,                # 原始SMILES
+    "item": {
+        "src_tokens": tensor,     # [L] 原子类型的token序列
+        "src_coord": tensor,      # [L,3] 原子3D坐标
+        "src_distance": tensor,   # [L,L] 原子间距离矩阵
+        "src_edge_type": tensor,  # [L,L] 原子间边类型
+    }
+}
+```
 
-原因：没有安装git lfs，下载的model.safetensors只是一个指向大文件的指针，可以通过以下方式安装：
+#### 批处理数据格式
+DataLoader输出的batch包含:
+```python
+{
+    "src_tokens": tensor,     # [B,L] 
+    "src_coord": tensor,      # [B,L,3]
+    "src_distance": tensor,   # [B,L,L]
+    "src_edge_type": tensor,  # [B,L,L]
+}
+```
+其中B为批大小,L为序列长度(包含padding)。
 
-1. macOS: `brew install git-lfs`
+### 3. 使用模型
 
-2. Ubuntu: `sudo apt-get install git-lfs`
+```python
+from unimol_lite.model import UniMolModel, UniMolConfig
 
-3. Windows: 下载安装包：https://git-lfs.github.com/
+# 初始化配置
+config = UniMolConfig()
 
-4. 非root用户：推荐使用conda `conda install conda-forge::git-lfs`
+# 加载预训练模型
+model = UniMolModel.from_pretrained("base_unimol")
 
-然后执行`git lfs install`，再执行`git lfs pull`即可
+# 使用模型进行推理
+encoder_output, pair_output = model(**batch)
+# encoder_output: [B,L,D] 分子表示
+# pair_output: [B,L,L,D] 原子对表示
+# 一般而言，你可能倾向于取encoder_rep[:, 0, :]作为整个SMILES的表征
+```
 
-国内网络受限的用户可以手动下载base_unimol/model.safetensors文件
+### 4. 输出说明
 
-然后替换掉本地克隆中的base_unimol目录下的model.safetensors文件即可
+模型输出包含两部分:
+1. encoder_output: 分子/原子级别的表示,形状为 [batch_size, seq_len, hidden_dim]
+2. pair_output: 原子对级别的表示,形状为 [batch_size, seq_len, seq_len, hidden_dim]
+
+这些表示可用于:
+- 分子性质预测
+- 分子相似度计算
+- 分子结构分析
+- 等下游任务
+
+## 替代下载方式
+
+如果wget不可用,也可以使用以下方式下载:
+
+```bash
+# 使用curl
+curl -L http://ohgy1146835.bohrium.tech:50001/download/base_unimol.zip -o base_unimol.zip
+
+# 使用aria2
+aria2c http://ohgy1146835.bohrium.tech:50001/download/base_unimol.zip
+
+# 断点续传
+wget -c http://ohgy1146835.bohrium.tech:50001/download/base_unimol.zip
+curl -L -C - http://ohgy1146835.bohrium.tech:50001/download/base_unimol.zip -o base_unimol.zip
+aria2c -c http://ohgy1146835.bohrium.tech:50001/download/base_unimol.zip
+```
+
+## 许可证
+
+本项目采用 MIT 许可证。详见 [LICENSE](LICENSE) 文件。

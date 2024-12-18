@@ -162,3 +162,4 @@ cureall
 ckpt
 *.ipynb
 unimol_lite/_version.py
+base_unimol/
