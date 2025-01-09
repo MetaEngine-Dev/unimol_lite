@@ -7,7 +7,7 @@ UniMol-Lite 是 [Uni-Mol](https://github.com/dptech-corp/Uni-Mol) 的简化版�
 ```shell
 pip install ssh://git@github.com/macroversus/unimol_lite.git
 # Download pre-trained models
-wget http://ohgy1146835.bohrium.tech:50001/download/base_unimol.zip
+wget http://ohgy1146835.bohrium.tech:50001/download/base_unimol -O base_unimol.zip
 unzip base_unimol.zip
 ```
 
@@ -130,20 +130,7 @@ encoder_output, pair_output = model(**batch)
 
 ## 替代下载方式
 
-如果wget不可用,也可以使用以下方式下载:
-
-```bash
-# 使用curl
-curl -L http://ohgy1146835.bohrium.tech:50001/download/base_unimol.zip -o base_unimol.zip
-
-# 使用aria2
-aria2c http://ohgy1146835.bohrium.tech:50001/download/base_unimol.zip
-
-# 断点续传
-wget -c http://ohgy1146835.bohrium.tech:50001/download/base_unimol.zip
-curl -L -C - http://ohgy1146835.bohrium.tech:50001/download/base_unimol.zip -o base_unimol.zip
-aria2c -c http://ohgy1146835.bohrium.tech:50001/download/base_unimol.zip
-```
+如果wget不可用,可以[点击这里](http://ohgy1146835.bohrium.tech:50001/base_unimol)查看更多的下载方式
 
 ## 许可证
 
