@@ -98,7 +98,7 @@ DataLoader输出的batch包含:
 ```
 其中B为批大小,L为序列长度(包含padding)。
 
-### 3. 使用模型
+### 2. 使用模型
 
 ```python
 from unimol_lite.model import UniMolModel, UniMolConfig
@@ -116,7 +116,7 @@ encoder_output, pair_output = model(**batch)
 # 一般而言，你可能倾向于取encoder_rep[:, 0, :]作为整个SMILES的表征
 ```
 
-### 4. 输出说明
+### 3. 输出说明
 
 模型输出包含两部分:
 1. encoder_output: 分子/原子级别的表示,形状为 [batch_size, seq_len, hidden_dim]
