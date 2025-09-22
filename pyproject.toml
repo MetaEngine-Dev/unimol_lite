@@ -1,51 +1,61 @@
 [build-system]
-build-backend = "setuptools.build_meta"
-requires = ["setuptools", "setuptools-scm>=8.0.4"]
+build-backend = "hatchling.build"
+requires = ["hatchling>=1.18"]
 
 [project]
 name = "unimol_lite"
+version = "0.0.0.dev"
 description = "简化版Uni-Mol"
-readme = "README.md"
+readme = "readme.md"
 keywords = ["Uni-Mol", "Deep Learning"]
 license = { text = "MIT" }
-maintainers = [{ name = "Lvjun Guo", email = "guolj@dp.tech" }]
-authors = [{ name = "Lvjun Guo", email = "guolj@dp.tech" }]
+maintainers = [
+  { name = "Lvjun Guo", email = "guolj@dp.tech" },
+  { name = "David Niteas", email = "david.ql.d@foxmail.com" },
+]
+authors = [
+  { name = "Lvjun Guo", email = "guolj@dp.tech" },
+  { name = "David Niteas", email = "david.ql.d@foxmail.com" },
+]
 requires-python = ">=3.9"
 classifiers = [
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11"
 ]
-dynamic = ["version"]
 dependencies = [
-    "rdkit",
-    "torch",
-    "torchvision",
-    "torchaudio",
-    "transformers",
-    "pandas",
-    "scipy",
-    "numpy",
-    "lmdb",
+  "rdkit",
+  "torchvision",
+  "torchaudio",
+  "transformers",
+  "pandas",
+  "scipy",
+  "numpy",
+  "lmdb",
+  "torch",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "black>=24.0.0",
-    "pytest>=8.0.0",
-    "pytest-cov>=4.1.0",
-    "isort>=5.13.0",
-    "flake8>=7.0.0",
+  "black>=24.0.0",
+  "pytest>=8.0.0",
+  "pytest-cov>=4.1.0",
+  "isort>=5.13.0",
+  "flake8>=7.0.0",
 ]
 
-[tool.setuptools.package-data]
-mypkg = ["*.json"]
-
-[tool.setuptools]
+[tool.hatch.build.targets.wheel]
 packages = ["unimol_lite"]
 
-[tool.setuptools_scm]
-write_to = "unimol_lite/_version.py"
-write_to_template = "version = __version__ = {version!r}\nversion_tuple = __version_tuple__ = {version_tuple!r}\nrevision = __revision__ = {scm_version.node!r}\n"
+[tool.hatch.build.targets.sdist]
+include = [
+  "/unimol_lite",
+  "/tests",
+  "/readme.md",
+]
+
+[tool.hatch.build.targets.wheel.force-include]
+"unimol_lite/model/configs" = "unimol_lite/model/configs"
 
 [tool.black]
 line-length = 120
@@ -59,20 +69,3 @@ max-line-length = 120
 
 [tool.pytest.ini_options]
 addopts = "--doctest-modules --cov"
-
-[tool.uv.sources]
-torch = [
-  { index = "pytorch-cu124", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
-]
-torchvision = [
-  { index = "pytorch-cu124", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
-]
-
-[[tool.uv.index]]
-url = "https://pypi.tuna.tsinghua.edu.cn/simple"
-default = true
-
-[[tool.uv.index]]
-name = "pytorch-cu124"
-url = "https://download.pytorch.org/whl/cu124"
-explicit = true
