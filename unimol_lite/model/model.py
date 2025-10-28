@@ -55,7 +55,10 @@ class UniMolModel(PreTrainedModel):
         if configs.masked_dist_loss > 0:
             self.dist_head = DistanceHead(configs.encoder_attention_heads, configs.activation_fn)
         self.classification_heads = nn.ModuleDict()
-        self.apply(init_bert_params)
+        # self.apply(init_bert_params)
+        
+    def _init_weights(self, module):
+        init_bert_params(module)
 
     def forward(
         self,
