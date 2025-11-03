@@ -79,6 +79,7 @@ def smiles2unimolitem(
     random_seed: int = 42,
     max_atoms: int = 256,
     normalize_coord: bool = True,
+    use_3d: bool = True,
     *addl_seeds
 ) -> dict[str, torch.Tensor]:
     """Generate input dictionary for UniMol model from smiles string.
@@ -90,6 +91,7 @@ def smiles2unimolitem(
         random_seed (int, optional): random seed effecting coordinate selection in coord_pool, and random selection of atoms when atoms exceed max_atoms. Defaults to 42.
         max_atoms (int, optional): maximum number of atoms to consider. Defaults to 256.
         normalize_coord (bool, optional): whether to normalize the coordinates. Defaults to True.
+        use_3d (bool, optional): whether to use 3D coordinates. Defaults to True.
 
     Returns:
         dict: dictionary containing the following keys:
@@ -98,7 +100,7 @@ def smiles2unimolitem(
             - src_coord: coordinates of atoms
             - src_edge_type: edge types of atoms
     """
-    atoms, coordinates_list = smiles2coords(smiles, coord_pool_count)
+    atoms, coordinates_list = smiles2coords(smiles, coord_pool_count, use_3d)
     with numpy_seed(random_seed, *addl_seeds):
         sample_idx = np.random.randint(len(coordinates_list))
     coordinates = coordinates_list[sample_idx]

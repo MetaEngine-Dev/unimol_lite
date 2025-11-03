@@ -40,12 +40,13 @@ def mol2coords_3d(mol, count) -> List[np.ndarray]:
         coordinate_list.append(coordinates.astype(np.float32))
     return coordinate_list
 
-def smiles2coords(smiles: str, count: int = 10) -> Tuple[np.ndarray, list]:
+def smiles2coords(smiles: str, count: int = 10, use_3d: bool = True) -> Tuple[np.ndarray, list]:
     """_summary_
 
     Args:
         smiles (str): smiles string
         count (int, optional): conformer num,all==11, 10 * 3d + 1 * 2d. Defaults to 10.
+        use_3d (bool, optional): use 3d or 2d. Defaults to True.
 
     Returns:
         Tuple[np.ndarray, list]: atoms, coordinates list
@@ -53,7 +54,7 @@ def smiles2coords(smiles: str, count: int = 10) -> Tuple[np.ndarray, list]:
     try:
         mol = Chem.MolFromSmiles(smiles)
         mol = AllChem.AddHs(mol)
-        if len(mol.GetAtoms()) > 400:
+        if len(mol.GetAtoms()) > 400 and use_3d is False:
             coordinate_list = [mol2coords_2d(mol)] * (count + 1)
             # print("atom num >400,use 2D coords", smi)
         else:
