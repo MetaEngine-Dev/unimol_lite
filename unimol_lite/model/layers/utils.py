@@ -83,7 +83,6 @@ class LayerNorm(torch.nn.Module):
             'elementwise_affine=True'.format(**self.__dict__)
 
 
-@torch.jit.script
 def gaussian(x, mean, std):
     pi = 3.14159
     a = (2 * pi) ** 0.5
