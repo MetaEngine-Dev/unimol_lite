@@ -4,7 +4,7 @@ requires = ["hatchling>=1.18"]
 
 [project]
 name = "unimol_lite"
-version = "0.0.0.dev"
+version = "0.1.0"
 description = "简化版Uni-Mol"
 readme = "readme.md"
 keywords = ["Uni-Mol", "Deep Learning"]
@@ -17,22 +17,19 @@ authors = [
   { name = "Lvjun Guo", email = "guolj@dp.tech" },
   { name = "David Niteas", email = "david.ql.d@foxmail.com" },
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10,<3.12"
 classifiers = [
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11"
 ]
 dependencies = [
-  "rdkit",
-  "torchvision",
-  "torchaudio",
-  "transformers",
-  "pandas",
-  "scipy",
-  "numpy",
-  "lmdb",
-  "torch",
+  "rdkit>=2025.9,<2026",
+  "transformers>=4.47,<5",
+  "pandas>=2.0",
+  "scipy>=1.10",
+  "numpy>=1.26,<2",
+  "lmdb>=1.4",
+  "torch>=2.0",
 ]
 
 [project.optional-dependencies]
@@ -51,11 +48,12 @@ packages = ["unimol_lite"]
 include = [
   "/unimol_lite",
   "/tests",
+  "/benchmarks",
+  "/examples",
   "/readme.md",
+  "/CHANGELOG.md",
+  "/LICENSE",
 ]
-
-[tool.hatch.build.targets.wheel.force-include]
-"unimol_lite/model/configs" = "unimol_lite/model/configs"
 
 [tool.black]
 line-length = 120
