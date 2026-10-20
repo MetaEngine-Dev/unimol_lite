@@ -128,7 +128,7 @@ featurize_batch(
 
 `timeout` 是**每个构象**的墙钟预算，覆盖 RDKit 嵌入（embed）与 MMFF 优化：
 
-- `None` 关闭预算，走历史无超时路径；单分子 API 默认 `None`，批量层默认 `30.0` 秒。
+- `None` 关闭预算，不设超时；单分子 API 默认 `None`，批量层默认 `30.0` 秒。
 - RDKit 原生超时只接受整数秒（亚秒向上取 1 秒），精确预算由 embed/MMFF 结束后的墙钟检查兜底。
 - `count > 1`（`smiles2coords`）时总预算为 `count * timeout`，任一构象失败即丢弃全部 3D 结果。
 - 失败不重试：相同参数 + 相同种子结果确定，重试只会翻倍耗时。
@@ -164,4 +164,4 @@ featurize_batch(
 
 ## 确定性
 
-随机性全部来自每次调用创建的局部 `np.random.RandomState`，不读写全局 `np.random` 状态；同一输入 + 同一种子在单线程/多线程下逐位一致。结果绑定 RDKit 版本（当前验证版本 `2025.09.1`）；启用 `timeout` 时，同一分子在不同机器或不同负载下可能 3D 成功、也可能降级 2D。需要可复现输出时用 `timeout=None`，或按 `meta["status"]` 过滤降级行。
+随机性全部来自每次调用创建的局部 `np.random.RandomState`，不读写全局 `np.random` 状态；同一输入 + 同一种子在单线程/多线程下结果一致。结果绑定 RDKit 版本（当前验证版本 `2025.09.1`）；启用 `timeout` 时，同一分子在不同机器或不同负载下可能 3D 成功、也可能降级 2D。需要可复现输出时用 `timeout=None`，或按 `meta["status"]` 过滤降级行。

@@ -70,11 +70,11 @@ To keep degraded 2D rows as well, also accept `meta["status"] == "degraded_2d"`.
 
 ### Can I wrap smiles2unimolitem in my own process pool?
 
-Yes, but it is rarely worth it: RDKit's embed/MMFF release the GIL, so the `featurize_batch` thread pool already scales close to linearly while avoiding inter-process serialization and memory copies. The main cost of a process pool is shipping result tensors back.
+Yes, but it is usually unnecessary: `featurize_batch` already runs a thread pool and handles row alignment and statuses.
 
-### Why is 8 threads better than 16?
+### How many workers should I use?
 
-16 threads drop to ~52% efficiency (memory bandwidth plus the GIL-bound 2D tensorization). 8 threads is the measured sweet spot, hence the `workers=min(8, cpu)` default.
+Start with `workers=8`. The benefit depends on molecule size and hardware; more threads are not always faster.
 
 ## Development and tests
 

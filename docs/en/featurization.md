@@ -128,7 +128,7 @@ Returns `list[(item | None, meta)]`, the same length as the input and in input o
 
 `timeout` is a **per-conformer** wall-clock budget covering RDKit embedding and MMFF optimization:
 
-- `None` disables the budget and keeps the historical untimed path; the single-molecule APIs default to `None`, the batch layer defaults to `30.0` seconds.
+- `None` disables the budget and applies no timeout; the single-molecule APIs default to `None`, the batch layer defaults to `30.0` seconds.
 - RDKit's native timeout only accepts whole seconds (sub-second values round up to 1 s); the exact budget is enforced by a wall-clock check after embed/MMFF.
 - With `count > 1` (`smiles2coords`) the total budget is `count * timeout`, and any single failing conformer discards all 3D results.
 - Failures are not retried: the same parameters plus the same seed are deterministic, so a retry only doubles the cost.
@@ -164,4 +164,4 @@ Returns `list[(item | None, meta)]`, the same length as the input and in input o
 
 ## Determinism
 
-All randomness comes from a local `np.random.RandomState` created per call; the global `np.random` state is never touched, so identical inputs and seeds are bitwise identical in serial and multi-threaded runs. Results are tied to the RDKit version (validated with `2025.09.1`). With `timeout` enabled, the same molecule may embed in 3D on one machine (or under one load) and degrade to 2D on another. For reproducible output use `timeout=None`, or filter degraded rows by `meta["status"]`.
+All randomness comes from a local `np.random.RandomState` created per call; the global `np.random` state is never touched, so identical inputs and seeds are identical in serial and multi-threaded runs. Results are tied to the RDKit version (validated with `2025.09.1`). With `timeout` enabled, the same molecule may embed in 3D on one machine (or under one load) and degrade to 2D on another. For reproducible output use `timeout=None`, or filter degraded rows by `meta["status"]`.

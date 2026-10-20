@@ -70,11 +70,11 @@ good = [(item, meta) for item, meta in results if item is not None and meta["sta
 
 ### 能用自己的进程池包 `smiles2unimolitem` 吗？
 
-可以，但通常没有必要：RDKit 的 embed/MMFF 会释放 GIL，`featurize_batch` 的线程池已能取得接近线性的加速，且省去进程间序列化与内存复制。自建进程池主要成本在结果张量的传回。
+可以，但通常没有必要：`featurize_batch` 已经内置线程池并处理了行对齐与状态。
 
-### 为什么 8 线程比 16 线程划算？
+### 应该开多少线程？
 
-16 线程效率约 52%（内存带宽与 2D 张量化的 GIL 限制），8 线程是实测甜点，因此默认 `workers=min(8, cpu)`。
+从 `workers=8` 开始；收益取决于分子大小与机器，线程更多不一定更快。
 
 ## 开发与测试
 

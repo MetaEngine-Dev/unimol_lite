@@ -28,40 +28,29 @@
 
 ## 超时与错误
 
-- 批量层内部始终以 `return_meta=True` 调用单分子 API，因此 `on_timeout="error"` 的超时表现为该行 `status="timeout_error"`、`item=None`，**不会中断整批**，也不需要捕获 `FeaturizationTimeout`。
+- 批量层始终以 `return_meta=True` 调用单分子 API，因此 `on_timeout="error"` 的超时表现为该行 `status="timeout_error"`、`item=None`，**不会中断整批**，也不需要捕获 `FeaturizationTimeout`。
 - `on_timeout="skip"` 的超时行为 `status="skipped"`；`fallback_2d` 行为 `status="degraded_2d"` 且仍返回 `item`。
 - 非法 SMILES 行为 `status="invalid"`；未预期异常行为 `status="error"`，`reason` 为异常类型名。
 - 单行异常隔离意味着**结果里可能混有 `item=None` 的行**，下游必须按 `meta["status"]` 过滤。
 
-## 性能基准
+## 性能
 
-125 个 HMDB 分层样本（重原子 5 桶 × 25，32 vCPU）：
+在 32 vCPU 机器上，125 个代表性分子的批量特征化：
 
-| workers | 墙钟 | 加速比 |
+| workers | 时间 | 加速 |
 | --- | --- | --- |
 | 1 | 27.82 s | 1.00× |
 | 4 | 8.73 s | 3.19× |
 | 8 | 5.56 s | **5.00×** |
 
-- **8 线程是甜点**：16 线程效率降到约 52%，因此默认 `workers=min(8, cpu)`。
-- 该样本中 **33/125 条长链脂类 `embed_failed → 2D`**，与改造前逐位比对一致，不是本库引入的回归。
-- 加速比止步于 5× 的主因是 2D 路径的张量化：那一步是 Python/NumPy 层操作，受 GIL 限制，线程并行无法完全摊开。
-
-RDKit 的 embed / MMFF 会释放 GIL，所以这里用**线程池**而不是进程池；进程池只会额外付出序列化与内存复制的成本。
-
-## 复跑基准
-
-```shell
-python benchmarks/bench_featurize.py --csv <csv> --per-bin 25 --workers 1,4,8
-```
-
-`--csv` 需要含 `SMILES` 列，按重原子分桶（`[5,15)`、`[15,25)`、`[25,40)`、`[40,60)`、`[60,80)`）各取前 `--per-bin` 行。脚本只打印耗时，不做阈值断言。不带 `--csv` 时跑内置的小样本冒烟集。
+- 默认 `workers=min(8, cpu)`；继续增加线程收益递减；
+- 大分子可能因 3D 构象生成失败而自动降级 2D（`status="degraded_2d"`）。
 
 ## 确定性边界
 
-- 随机性全部来自局部 `np.random.RandomState`，同一输入 + 同一种子在单线程与多线程下逐位一致。
-- 结果绑定 RDKit 版本（当前验证 `2025.09.1`）。
-- **启用 `timeout` 时跨机器可能不一致**：同一分子在有预算的机器上可能 3D 成功，在慢机器上降级 2D。需要严格可复现时用 `timeout=None`，或按 `meta["status"]` 过滤。
+- 同一输入与种子在串行/多线程下结果一致；
+- 结果依赖 RDKit 版本（验证版本 `2025.09.1`）；
+- 启用 `timeout` 时，慢机器上可能降级 2D；需要严格可复现时用 `timeout=None`，或按 `meta["status"]` 过滤。
 
 ## 何时用批量层
 

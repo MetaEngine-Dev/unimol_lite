@@ -133,7 +133,7 @@ for item, meta in results:
     print(meta["status"], meta["elapsed_s"])
 ```
 
-- `workers` 默认 `min(8, os.cpu_count())`；RDKit 的 embed/MMFF 释放 GIL，**线程池优于进程池**；
+- `workers` 默认 `min(8, os.cpu_count())`；使用线程池并行特征化；
 - 单个坏分子不中断整批（逐项记 `status`），重复 SMILES 不折叠；非法批量参数（`coord_mode` / `on_timeout` / `timeout` / `workers` / `window`）在提交前抛 `ValueError`。
 
 #### `coord_mode`
@@ -152,7 +152,7 @@ for item, meta in results:
 | `error` | `item` 为 `None`（`return_meta=False` 时抛 `FeaturizationTimeout`），状态 `timeout_error` |
 | `skip` | `item` 为 `None`，状态 `skipped` |
 
-`timeout` 是**每个构象**的墙钟预算（覆盖 embed + MMFF）；`count > 1` 时总预算为 `count * timeout`，任一构象失败即丢弃全部 3D 结果。`timeout=None`（单分子 API 默认）走历史无预算路径，批量层默认 `timeout=30.0`。RDKit 原生 timeout 粒度为整数秒（亚秒按 1s 执行），精确预算由 embed/MMFF 结束后的墙钟检查兜底。
+`timeout` 是**每个构象**的墙钟预算（覆盖 embed + MMFF）；`count > 1` 时总预算为 `count * timeout`，任一构象失败即丢弃全部 3D 结果。`timeout=None`（单分子 API 默认）不设预算，批量层默认 `timeout=30.0`。RDKit 原生 timeout 粒度为整数秒（亚秒按 1s 执行），精确预算由 embed/MMFF 结束后的墙钟检查兜底。
 
 #### `meta` 状态模型
 
@@ -205,28 +205,24 @@ unimolitem = smiles2unimolitem(smiles, coord_mode="auto")
 
 ## 性能与确定性
 
-125 个 HMDB 分层样本（重原子 5 桶 × 25，`benchmarks/bench_featurize.py --per-bin 25`，32 vCPU）：
+在 32 vCPU 机器上，125 个代表性分子（重原子 5–80）的批量特征化：
 
-| workers | 墙钟 | 加速比 |
+| workers | 时间 | 加速 |
 |---|---|---|
 | 1 | 27.82 s | 1.00× |
 | 4 | 8.73 s | 3.19× |
 | 8 | 5.56 s | **5.00×** |
 
-- 8 线程为甜点，16 线程效率降到约 52%，故默认 `workers=min(8, cpu)`；
-- 该样本中 **33/125 条长链脂类 `embed_failed → 2D`**，与改造前逐位比对一致（非本库引入的回归）；2D 路径的张量化受 GIL 限制，是加速比止步 5× 的主因。
+- 默认 `workers=min(8, cpu)`；继续增加线程收益递减；
+- 大分子可能因 3D 构象生成失败而自动降级 2D（`meta["status"] == "degraded_2d"`）。
 
 确定性：
 
-- 随机性全部来自**局部 `np.random.RandomState`**（不再读写全局 `np.random` 状态），同一输入 + 同一种子在单线程/多线程下逐位一致；
-- 结果**绑定 RDKit 版本**（当前验证版本 **2025.09.1**），升级 RDKit 可能改变构象与坐标；
-- **启用 `timeout` 时，同一分子在不同机器（或不同负载）上可能 3D 成功、也可能降级 2D**。需要可复现输出时用 `timeout=None`，或按 `meta["status"]` 过滤降级行。
+- 同一输入与种子在串行/多线程下结果一致；
+- 结果依赖 RDKit 版本（验证版本 `2025.09.1`）；
+- 启用 `timeout` 时，慢机器上可能降级 2D；需要严格可复现时用 `timeout=None`，或按 `meta["status"]` 过滤。
 
-复跑基准：
-
-```shell
-python benchmarks/bench_featurize.py --csv <HMDB csv> --per-bin 25 --workers 1,4,8
-```
+基准脚本：`benchmarks/bench_featurize.py`。
 
 ## 许可证
 

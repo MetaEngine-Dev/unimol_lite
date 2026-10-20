@@ -33,9 +33,9 @@
 - Invalid SMILES yield `status="invalid"`; unexpected exceptions yield `status="error"` with the exception type as `reason`.
 - Per-row isolation means **the result list can contain rows with `item=None`**: downstream code must filter on `meta["status"]`.
 
-## Benchmarks
+## Performance
 
-125 stratified HMDB samples (5 heavy-atom bins × 25, 32 vCPU):
+Batch featurization of 125 representative molecules (5–80 heavy atoms) on a 32-vCPU machine:
 
 | workers | wall clock | speed-up |
 | --- | --- | --- |
@@ -43,25 +43,14 @@
 | 4 | 8.73 s | 3.19× |
 | 8 | 5.56 s | **5.00×** |
 
-- **8 threads is the sweet spot**: 16 threads drop to ~52% efficiency, hence the `workers=min(8, cpu)` default.
-- In this sample **33/125 long-chain lipids hit `embed_failed → 2D`**, bitwise identical to the pre-refactor run — not a regression introduced here.
-- The speed-up plateaus at 5× because 2D tensorization is Python/NumPy work that holds the GIL, so thread parallelism cannot fully overlap it.
-
-RDKit's embed/MMFF release the GIL, which is why this uses a **thread pool** rather than a process pool; a process pool only adds serialization and memory-copy overhead.
-
-## Re-running the benchmark
-
-```shell
-python benchmarks/bench_featurize.py --csv <csv> --per-bin 25 --workers 1,4,8
-```
-
-`--csv` needs a `SMILES` column and selects the first `--per-bin` rows per heavy-atom bin (`[5,15)`, `[15,25)`, `[25,40)`, `[40,60)`, `[60,80)`). The script only prints timings; it asserts no threshold. Without `--csv` it runs a small built-in smoke set.
+- The default is `workers=min(8, cpu)`; more threads show diminishing returns;
+- Large molecules may fall back to 2D when 3D embedding fails (`status="degraded_2d"`).
 
 ## Determinism boundaries
 
-- All randomness comes from a local `np.random.RandomState`; identical inputs and seeds are bitwise identical in serial and multi-threaded runs.
-- Results are tied to the RDKit version (validated with `2025.09.1`).
-- **With `timeout` enabled, results can differ across machines**: the same molecule may embed in 3D on a fast machine and degrade to 2D on a slow or loaded one. For strict reproducibility use `timeout=None`, or filter on `meta["status"]`.
+- Identical inputs and seeds produce identical results in serial and multi-threaded runs;
+- Results depend on the RDKit version (validated with `2025.09.1`);
+- With `timeout`, a slow machine may degrade a molecule to 2D; for strict reproducibility use `timeout=None`, or filter on `meta["status"]`.
 
 ## When to use the batch layer
 
