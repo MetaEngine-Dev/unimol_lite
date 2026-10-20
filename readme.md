@@ -2,22 +2,23 @@
 
 UniMol-Lite 是 [Uni-Mol](https://github.com/dptech-corp/Uni-Mol) 的简化版本实现。
 
+## 文档 / Documentation
+
+- [文档导航](docs/README.md)（中英双语）
+- 中文：[概览](docs/zh/index.md) · [快速开始](docs/zh/getting-started.md) · [特征化 API](docs/zh/featurization.md) · [批量与性能](docs/zh/batch-and-performance.md) · [模型、迁移与 FAQ](docs/zh/model-and-faq.md)
+- English: [Overview](docs/en/index.md) · [Getting started](docs/en/getting-started.md) · [Featurization API](docs/en/featurization.md) · [Batch and performance](docs/en/batch-and-performance.md) · [Model, migration and FAQ](docs/en/model-and-faq.md)
+
 ## 安装
 
 ```shell
-# 使用 uv 安装（推荐；当前为私有仓库，需要该仓库的 SSH 访问权限）
-uv pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git"
+# 安装 tag v0.1.0
+pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.1.0"
 
-# 或者使用 pip 安装
-pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git"
-
-# 开发环境设置
-uv pip install -e ".[dev]"  # 安装开发依赖
-# 或者使用pip
+# 开发环境设置（可编辑安装 + 开发依赖）
 pip install -e ".[dev]"
 
 # 运行测试
-pytest tests/
+pytest tests/ -q
 
 # 运行代码格式化
 black .
@@ -25,21 +26,7 @@ isort .
 flake8 .
 ```
 
-> **PyPI 发布：TBD**（尚未发布，当前只能从上面的 git 地址安装）。
-
-## 预训练模型
-
-- **Featurization（SMILES → 模型输入）不需要任何权重**：`smiles2unimolitem` / `featurize_batch` 只依赖 RDKit，安装后即可使用。
-- **只有 `UniMolModel.from_pretrained(...)` 需要权重**，且权重需用户自备：把 `base_unimol/` 放到本地，再将目录路径传给 `UniMolModel.from_pretrained("base_unimol")`。
-- 权重下载入口 **TBD**（原内部 bohrium 链接仅内网可达，已暂从本文移除）。
-
-权重文件组织如下:
-
-```
-base_unimol/
-|-- config.json
-`-- model.safetensors
-```
+> 仓库目前为私有，公开后以上 HTTPS 地址可直接使用；维护者访问私有仓库时可改用 SSH：`pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git@v0.1.0"`。
 
 ## 使用示例
 
@@ -204,25 +191,7 @@ unimolitem = smiles2unimolitem(smiles, coord_mode="auto")
 > 注意：旧默认 `use_3d=True` 对所有尺寸走 3D，而 `coord_mode="auto"` 对 >400 原子走 2D——若原来依赖超大分子的 3D 结果，请显式用 `coord_mode="3d"`。
 > 若希望把调用点的 dask 进程池换成库内线程池，可用 `featurize_batch(smiles_list, workers=8, timeout=30.0)`（等长保序，逐项状态）。
 
-### 3. 使用模型
-
-```python
-from unimol_lite.model import UniMolModel, UniMolConfig
-
-# 初始化配置
-config = UniMolConfig()
-
-# 加载预训练模型（需自备 base_unimol/ 权重目录）
-model = UniMolModel.from_pretrained("base_unimol")
-
-# 使用模型进行推理
-encoder_output, pair_output = model(**batch)
-# encoder_output: [B,L,D] 分子表示
-# pair_output: [B,L,L,D] 原子对表示
-# 一般而言，你可能倾向于取encoder_rep[:, 0, :]作为整个SMILES的表征
-```
-
-### 4. 输出说明
+### 3. 输出说明
 
 模型输出包含两部分:
 1. encoder_output: 分子/原子级别的表示,形状为 [batch_size, seq_len, hidden_dim]

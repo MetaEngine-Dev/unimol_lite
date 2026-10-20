@@ -1,8 +1,8 @@
 # Changelog
 
-本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 的组织方式，版本号在正式发布前暂为 `0.0.0.dev`。
+本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 的组织方式，当前版本为 `0.1.0`（tag `v0.1.0`）。
 
-## [Unreleased]
+## [0.1.0]
 
 ### Added
 
@@ -13,6 +13,7 @@
 - 新增线程安全的局部 RNG 工具 `make_rng` / `derive_seed`（`unimol_lite/data/utils.py`）。
 - 新增吞吐基准脚本 `benchmarks/bench_featurize.py`（自包含冒烟样本 + `--csv --per-bin` 分层基准）。
 - 新增 `CHANGELOG.md` 与 `LICENSE`（MIT）。
+- 新增中英双语文档 `docs/`（导航 + 中文/英文各 5 篇），根 `README` 增加文档导航。
 
 ### Changed
 
@@ -23,7 +24,7 @@
 - `timeout` 路径改用 `rdDistGeom.EmbedParameters`（`timeout` 为整数秒、`maxIterations=0`、显式恢复旧 ETKDG 开关），MMFF 优化纳入同一墙钟预算；超预算或失败按 `on_timeout` 降级。
 - 2D 降级在 `deepcopy` 的干净分子上计算，且每个构象返回独立数组，避免残留构象或数组别名污染。
 - 批量层对非法参数（`coord_mode` / `on_timeout` / `timeout` / `workers` / `window`）在提交前抛 `ValueError`；单行未预期异常隔离为 `status="error"`，不中断整批。
-- `README` 重写：安装地址改为私有 SSH 仓库（PyPI 发布 TBD）、明确 featurization 不需要权重、新增「分子采样」章节与 `use_3d` 迁移对照。
+- `README` 重写：安装改为 git 地址（`@v0.1.0`）、新增「分子采样」章节与 `use_3d` 迁移对照。
 
 ### Performance
 
@@ -38,4 +39,4 @@
 - 新增 `tests/test_rng_compat.py`（局部 RNG 与旧全局序列逐位一致、进程无关 seed 派生、全局状态不被修改）。
 - 新增 `tests/test_timeout.py`（真实超时、无二次重试、MMFF 预算、三种 `on_timeout`、`timeout=None` 与有限预算逐位一致）。
 - 新增 `tests/test_batch.py`（保序等长、重复 SMILES、串行与 8 线程逐位一致、超时/异常逐行隔离、非法批量参数 `ValueError`）。
-- 全量测试：**89 passed, 1 skipped**（skip 为无本地预训练权重的 `test_model_from_pretrained`）。
+- 全量测试：**89 passed, 1 skipped**。
