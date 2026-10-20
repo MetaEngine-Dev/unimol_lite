@@ -31,4 +31,4 @@ UniMol-Lite 把「SMILES → 模型输入」拆成两层：
 
 ## 版本与许可
 
-当前版本 `0.1.0`（tag `v0.1.0`），通过 git 安装；许可证 MIT。代码源自 [Uni-Mol](https://github.com/dptech-corp/Uni-Mol)（DP Technology，MIT）。
+当前版本 `0.1.1`（tag `v0.1.1`），通过 git 安装；许可证 MIT。代码源自 [Uni-Mol](https://github.com/dptech-corp/Uni-Mol)（DP Technology，MIT）。

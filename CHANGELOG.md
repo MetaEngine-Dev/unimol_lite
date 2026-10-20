@@ -1,6 +1,12 @@
 # Changelog
 
-本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 的组织方式，当前版本为 `0.1.0`（tag `v0.1.0`）。
+本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 的组织方式，当前版本为 `0.1.1`（tag `v0.1.1`）。
+
+## [0.1.1]
+
+### Changed
+
+- 文档：清理面向用户的表述，统一安装与性能说明。
 
 ## [0.1.0]
 

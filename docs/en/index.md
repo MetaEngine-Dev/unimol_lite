@@ -31,4 +31,4 @@ UniMol-Lite splits "SMILES → model input" into two layers:
 
 ## Version and license
 
-Current version `0.1.0` (tag `v0.1.0`), installed via git. Licensed under MIT. The code derives from [Uni-Mol](https://github.com/dptech-corp/Uni-Mol) (DP Technology, MIT).
+Current version `0.1.1` (tag `v0.1.1`), installed via git. Licensed under MIT. The code derives from [Uni-Mol](https://github.com/dptech-corp/Uni-Mol) (DP Technology, MIT).

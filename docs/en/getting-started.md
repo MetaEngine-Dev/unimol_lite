@@ -10,13 +10,13 @@
 ## Installation
 
 ```shell
-pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.1.0"
+pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.1.1"
 ```
 
 The repository is currently private; once it is public the HTTPS address above works as-is. Maintainers can use SSH while the repository stays private:
 
 ```shell
-pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git@v0.1.0"
+pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git@v0.1.1"
 ```
 
 For development (editable install plus dev extras):

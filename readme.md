@@ -11,8 +11,8 @@ UniMol-Lite 是 [Uni-Mol](https://github.com/dptech-corp/Uni-Mol) 的简化版�
 ## 安装
 
 ```shell
-# 安装 tag v0.1.0
-pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.1.0"
+# 安装 tag v0.1.1
+pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.1.1"
 
 # 开发环境设置（可编辑安装 + 开发依赖）
 pip install -e ".[dev]"
@@ -26,7 +26,7 @@ isort .
 flake8 .
 ```
 
-> 仓库目前为私有，公开后以上 HTTPS 地址可直接使用；维护者访问私有仓库时可改用 SSH：`pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git@v0.1.0"`。
+> 仓库目前为私有，公开后以上 HTTPS 地址可直接使用；维护者访问私有仓库时可改用 SSH：`pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git@v0.1.1"`。
 
 ## 使用示例
 

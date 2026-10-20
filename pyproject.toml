@@ -4,7 +4,7 @@ requires = ["hatchling>=1.18"]
 
 [project]
 name = "unimol_lite"
-version = "0.1.0"
+version = "0.1.1"
 description = "简化版Uni-Mol"
 readme = "readme.md"
 keywords = ["Uni-Mol", "Deep Learning"]
