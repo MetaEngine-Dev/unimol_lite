@@ -1,9 +1,18 @@
+import time
+from typing import Optional
+
 import numpy as np
 import torch
 from scipy.spatial.distance import squareform
 from torch.nn.functional import pdist
-from .smiles2coords import smiles2coords
-from .utils import numpy_seed
+from .smiles2coords import (
+    FeaturizationTimeout,
+    OnTimeout,
+    smiles2coords,
+    _resolve_coord_mode,
+    _warn_use_3d_deprecated,
+)
+from .utils import make_rng, _UNSET
 from ..model.tokenizer import UniMolTokenizer
 
 def generate_unimolitem(
@@ -37,10 +46,11 @@ def generate_unimolitem(
     atoms = atoms[mask_hydrogen]
     coordinates = coordinates[mask_hydrogen]
     if max_atoms and len(atoms) > max_atoms:
-        with numpy_seed(random_seed, *addl_seeds):
-            index = np.random.choice(len(atoms), max_atoms, replace=False)
-            atoms = np.array(atoms)[index]
-            coordinates = coordinates[index]
+        # local RNG: never touches the global numpy state (thread-safe)
+        rng = make_rng(random_seed, *addl_seeds)
+        index = rng.choice(len(atoms), max_atoms, replace=False)
+        atoms = np.array(atoms)[index]
+        coordinates = coordinates[index]
     if normalize_coord:
         coordinates = coordinates - coordinates.mean(axis=0)
     src_tokens = torch.tensor(tokenizer.encode(atoms.tolist()), dtype=torch.long)
@@ -79,8 +89,13 @@ def smiles2unimolitem(
     random_seed: int = 42,
     max_atoms: int = 256,
     normalize_coord: bool = True,
-    use_3d: bool = True,
-    *addl_seeds
+    use_3d=_UNSET,
+    *addl_seeds,
+    coord_mode=_UNSET,
+    rng_seed: int = None,
+    return_meta: bool = False,
+    timeout: Optional[float] = None,
+    on_timeout: OnTimeout = "fallback_2d",
 ) -> dict[str, torch.Tensor]:
     """Generate input dictionary for UniMol model from smiles string.
 
@@ -91,7 +106,18 @@ def smiles2unimolitem(
         random_seed (int, optional): random seed effecting coordinate selection in coord_pool, and random selection of atoms when atoms exceed max_atoms. Defaults to 42.
         max_atoms (int, optional): maximum number of atoms to consider. Defaults to 256.
         normalize_coord (bool, optional): whether to normalize the coordinates. Defaults to True.
-        use_3d (bool, optional): whether to use 3D coordinates. Defaults to True.
+        use_3d (bool, optional): deprecated, mapped to ``coord_mode``
+            (``True`` -> ``"3d"``, ``False`` -> ``"auto"``).
+        coord_mode (str, optional): ``"auto"`` (<=400 atoms -> 3D, >400 -> 2D),
+            ``"3d"`` or ``"2d"``. Defaults to ``"auto"``.
+        rng_seed (int, optional): seed for all random draws; defaults to ``random_seed``.
+        return_meta (bool, optional): also return a meta dict. Defaults to False.
+        timeout (float | None, optional): per-conformer wall-clock budget in
+            seconds (embed + MMFF). ``None`` (default) keeps the historical
+            untimed path. See :func:`smiles2coords`.
+        on_timeout (str, optional): ``"fallback_2d"`` / ``"error"`` / ``"skip"``,
+            forwarded to :func:`smiles2coords`. With ``"error"`` and
+            ``return_meta=False`` a :class:`FeaturizationTimeout` is raised.
 
     Returns:
         dict: dictionary containing the following keys:
@@ -99,17 +125,56 @@ def smiles2unimolitem(
             - src_distance: distance matrix of atoms
             - src_coord: coordinates of atoms
             - src_edge_type: edge types of atoms
+
+        When ``return_meta=True`` returns ``(dict | None, meta)``; invalid SMILES
+        yields ``(None, meta)`` with ``status="invalid"``.
     """
-    atoms, coordinates_list = smiles2coords(smiles, coord_pool_count, use_3d)
-    with numpy_seed(random_seed, *addl_seeds):
-        sample_idx = np.random.randint(len(coordinates_list))
+    start = time.perf_counter()
+    seed = random_seed if rng_seed is None else rng_seed
+
+    # resolve the deprecated arg here (warning points at this function's caller)
+    # and hand ``smiles2coords`` a plain coord_mode, so it warns only once.
+    if use_3d is not _UNSET or isinstance(coord_mode, bool):
+        _warn_use_3d_deprecated()
+    mode = _resolve_coord_mode(coord_mode, use_3d)
+
+    # meta is always requested internally: ``status``/``reason`` decide both the
+    # legacy return shapes and the exception below.
+    coords_result, meta = smiles2coords(
+        smiles,
+        coord_pool_count,
+        coord_mode=mode,
+        return_meta=True,
+        timeout=timeout,
+        on_timeout=on_timeout,
+    )
+    if coords_result is None:
+        if return_meta:
+            meta["elapsed_s"] = time.perf_counter() - start
+            return None, meta
+        if meta["status"] == "timeout_error":
+            raise FeaturizationTimeout(
+                f"featurization of {smiles!r} exceeded timeout: {meta.get('reason')}"
+            )
+        if meta["status"] == "skipped":
+            return None
+        # legacy: an unparseable SMILES without meta raised TypeError
+        raise TypeError(f"cannot featurize SMILES {smiles!r}: {meta['status']}")
+    atoms, coordinates_list = coords_result
+
+    rng = make_rng(seed, *addl_seeds)
+    sample_idx = rng.randint(len(coordinates_list))
     coordinates = coordinates_list[sample_idx]
-    return generate_unimolitem(
+    item = generate_unimolitem(
         atoms = atoms,
         coordinates = coordinates,
         tokenizer = tokenizer,
-        random_seed = random_seed,
+        random_seed = seed,
         max_atoms = max_atoms,
         normalize_coord = normalize_coord,
         *addl_seeds
     )
+    if return_meta:
+        meta["elapsed_s"] = time.perf_counter() - start
+        return item, meta
+    return item
