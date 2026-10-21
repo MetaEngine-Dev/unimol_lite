@@ -4,17 +4,17 @@ requires = ["hatchling>=1.18"]
 
 [project]
 name = "unimol_lite"
-version = "0.2.0"
+version = "0.2.1"
 description = "简化版Uni-Mol：特征化与预训练"
 readme = "readme.md"
 keywords = ["Uni-Mol", "Deep Learning"]
 license = { text = "MIT" }
 maintainers = [
-  { name = "Lvjun Guo", email = "guolj@dp.tech" },
+  { name = "Lvjun Guo", email = "gljx898989@163.com" },
   { name = "David Niteas", email = "david.ql.d@foxmail.com" },
 ]
 authors = [
-  { name = "Lvjun Guo", email = "guolj@dp.tech" },
+  { name = "Lvjun Guo", email = "gljx898989@163.com" },
   { name = "David Niteas", email = "david.ql.d@foxmail.com" },
 ]
 requires-python = ">=3.10,<3.12"

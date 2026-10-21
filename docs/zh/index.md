@@ -34,4 +34,4 @@ UniMol-Lite 把「SMILES → 模型输入」拆成两层：
 
 ## 版本与许可
 
-当前版本 `0.2.0`，许可证 MIT。代码源自 [Uni-Mol](https://github.com/deepmodeling/Uni-Mol)（DP Technology，MIT）。本仓库不是 Uni-Mol 官方版本；需要官方实现或权重请前往官方仓库。
+当前版本 `0.2.1`，许可证 MIT。代码源自 [Uni-Mol](https://github.com/deepmodeling/Uni-Mol)（DP Technology，MIT）。本仓库不是 Uni-Mol 官方版本；需要官方实现或权重请前往官方仓库。

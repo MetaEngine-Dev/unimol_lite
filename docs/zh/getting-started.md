@@ -10,13 +10,13 @@
 ## 安装
 
 ```shell
-pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.2.0"
+pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.2.1"
 ```
 
-仓库目前为私有，公开后上述 HTTPS 地址可直接使用；维护者访问私有仓库时可改用 SSH 地址：
+维护者使用 SSH 安装时：
 
 ```shell
-pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git@v0.2.0"
+pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git@v0.2.1"
 ```
 
 开发环境（可编辑安装 + 开发依赖）：

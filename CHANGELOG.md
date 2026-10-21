@@ -1,6 +1,13 @@
 # Changelog
 
-本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 的组织方式，当前版本为 `0.2.0`。
+本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 的组织方式，当前版本为 `0.2.1`。
+
+## [0.2.1]
+
+### Changed
+
+- 更正共同作者 Lvjun Guo 的联系邮箱为 `gljx898989@163.com`。
+- 更新公开仓库安装说明。
 
 ## [0.2.0]
 
