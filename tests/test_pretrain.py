@@ -84,3 +84,36 @@ def test_prepare_lmdb_and_lmdb_dataset(tmp_path: Path):
 
 def test_cli_selftest():
     assert main(["selftest", "--device", "cpu"]) == 0
+
+
+def test_cli_featurize_prints_and_saves(tmp_path: Path, capsys):
+    code = main(
+        [
+            "featurize",
+            "--smiles",
+            "CCO",
+            "--timeout",
+            "10",
+            "--max-atoms",
+            "32",
+        ]
+    )
+    assert code == 0
+    assert '"src_tokens": [5]' in capsys.readouterr().out
+
+    output = tmp_path / "cco.npz"
+    code = main(
+        [
+            "featurize",
+            "--smiles",
+            "CCO",
+            "--timeout",
+            "10",
+            "--max-atoms",
+            "32",
+            "--output",
+            str(output),
+        ]
+    )
+    assert code == 0
+    assert output.is_file()

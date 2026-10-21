@@ -40,6 +40,18 @@ def _build_parser() -> argparse.ArgumentParser:
     prepare.add_argument("--keep-errors", action="store_true")
     prepare.add_argument("--quiet", action="store_true")
 
+    featurize = sub.add_parser(
+        "featurize", help="featurize one SMILES and print or save the tensors"
+    )
+    featurize.add_argument("--smiles", required=True)
+    featurize.add_argument(
+        "--output", "-o", default=None, help="optional .pt or .npz file"
+    )
+    featurize.add_argument("--coord-mode", choices=["auto", "3d", "2d"], default="auto")
+    featurize.add_argument("--timeout", type=float, default=30.0)
+    featurize.add_argument("--max-atoms", type=_positive_int, default=256)
+    featurize.add_argument("--quiet", action="store_true")
+
     pretrain = sub.add_parser(
         "pretrain", help="run masked-atom pretraining with Lightning"
     )
@@ -99,6 +111,54 @@ def _run_prepare(args) -> int:
     )
     if not args.quiet:
         print(json.dumps(result, ensure_ascii=False))
+    return 0
+
+
+def _run_featurize(args) -> int:
+    import numpy as np
+
+    from .data import smiles2unimolitem
+
+    item, meta = smiles2unimolitem(
+        args.smiles,
+        coord_mode=args.coord_mode,
+        timeout=args.timeout,
+        max_atoms=args.max_atoms,
+        return_meta=True,
+    )
+    if item is None:
+        raise ValueError(
+            "could not featurize %r: status=%s reason=%s"
+            % (args.smiles, meta.get("status"), meta.get("reason"))
+        )
+    if args.output:
+        output = Path(args.output).expanduser()
+        if not output.suffix:
+            output = output.with_suffix(".pt")
+        output.parent.mkdir(parents=True, exist_ok=True)
+        if output.suffix.lower() == ".npz":
+            np.savez(
+                output,
+                **{key: value.detach().cpu().numpy() for key, value in item.items()},
+                meta=np.asarray(json.dumps(meta, ensure_ascii=False)),
+            )
+        elif output.suffix.lower() in (".pt", ".pth"):
+            import torch
+
+            torch.save({"smiles": args.smiles, "item": item, "meta": meta}, output)
+        else:
+            raise ValueError("output must end with .pt, .pth or .npz")
+        if not args.quiet:
+            print("wrote %s" % output)
+        return 0
+
+    summary = {
+        "smiles": args.smiles,
+        "status": meta.get("status"),
+        "coord_mode": meta.get("coord_mode"),
+        "shapes": {key: list(value.shape) for key, value in item.items()},
+    }
+    print(json.dumps(summary, ensure_ascii=False))
     return 0
 
 
@@ -271,6 +331,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     try:
         if args.command == "prepare-lmdb":
             return _run_prepare(args)
+        if args.command == "featurize":
+            return _run_featurize(args)
         if args.command == "pretrain":
             return _run_pretrain(args)
         if args.command == "selftest":

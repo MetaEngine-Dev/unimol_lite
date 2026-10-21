@@ -16,6 +16,7 @@ unimol-lite selftest --help
 | 命令 | 作用 | 是否需要 `[train]` 依赖 |
 | --- | --- | --- |
 | `prepare-lmdb` | 把 CSV 中的 SMILES 特征化成 LMDB | 否 |
+| `featurize` | 特征化单个 SMILES，打印形状或保存张量 | 否 |
 | `pretrain` | 用 PyTorch Lightning 做掩码原子预训练 | 是 |
 | `selftest` | 特征化 + 微型模型前向/损失自检 | 否 |
 
@@ -50,6 +51,24 @@ unimol-lite prepare-lmdb \
 ```json
 {"written": 1234, "skipped": 5, "total": 1239, "path": "molecules.lmdb"}
 ```
+
+## featurize
+
+```shell
+unimol-lite featurize --smiles "CCO"
+unimol-lite featurize --smiles "CCO" --output cco.npz
+```
+
+| 参数 | 默认值 | 说明 |
+| --- | --- | --- |
+| `--smiles` | 必填 | 输入 SMILES |
+| `--output`, `-o` | 无 | 可选输出文件；`.npz` 或 `.pt` / `.pth` |
+| `--coord-mode` | `auto` | `auto` / `3d` / `2d` |
+| `--timeout` | `30.0` | 每个构象的秒级预算 |
+| `--max-atoms` | `256` | 最大原子数 |
+| `--quiet` | 关闭 | 保存文件时不打印路径 |
+
+不传 `--output` 时打印 JSON，包含 `status`、`coord_mode` 和四个张量的形状；传 `--output` 时保存 `src_tokens` / `src_coord` / `src_distance` / `src_edge_type` 及 `meta`。
 
 ## pretrain
 

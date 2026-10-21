@@ -58,6 +58,6 @@ Results are **the same length as the input and in input order**: an invalid SMIL
 
 ```shell
 pytest tests/ -q
-# 93 passed, 1 skipped
+# 94 passed, 1 skipped
 ```
 

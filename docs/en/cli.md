@@ -16,6 +16,7 @@ unimol-lite selftest --help
 | Command | Purpose | Needs `[train]` extras |
 | --- | --- | --- |
 | `prepare-lmdb` | Featurize SMILES from a CSV into an LMDB | No |
+| `featurize` | Featurize one SMILES; print shapes or save tensors | No |
 | `pretrain` | Masked-atom pretraining with PyTorch Lightning | Yes |
 | `selftest` | Featurize + tiny forward/loss check | No |
 
@@ -50,6 +51,26 @@ On success it exits with code `0` and prints:
 ```json
 {"written": 1234, "skipped": 5, "total": 1239, "path": "molecules.lmdb"}
 ```
+
+## featurize
+
+```shell
+unimol-lite featurize --smiles "CCO"
+unimol-lite featurize --smiles "CCO" --output cco.npz
+```
+
+| Option | Default | Meaning |
+| --- | --- | --- |
+| `--smiles` | required | Input SMILES |
+| `--output`, `-o` | none | Optional output file; `.npz` or `.pt` / `.pth` |
+| `--coord-mode` | `auto` | `auto` / `3d` / `2d` |
+| `--timeout` | `30.0` | Per-conformer wall-clock budget in seconds |
+| `--max-atoms` | `256` | Maximum atoms |
+| `--quiet` | off | Do not print the path when saving |
+
+Without `--output`, it prints JSON with `status`, `coord_mode` and the shapes of
+the four tensors. With `--output`, it saves `src_tokens` / `src_coord` /
+`src_distance` / `src_edge_type` plus `meta`.
 
 ## pretrain
 

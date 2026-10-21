@@ -58,6 +58,6 @@ for smi, (item, meta) in zip(smiles_list, results):
 
 ```shell
 pytest tests/ -q
-# 93 passed, 1 skipped
+# 94 passed, 1 skipped
 ```
 

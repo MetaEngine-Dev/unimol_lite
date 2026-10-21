@@ -209,6 +209,9 @@ unimol-lite prepare-lmdb \
   --smiles-column smiles \
   --nproc 8
 
+# 单分子特征化（打印形状或保存 .pt/.npz）
+unimol-lite featurize --smiles "CCO"
+
 # 掩码原子预训练
 unimol-lite pretrain \
   --lmdb molecules.lmdb \

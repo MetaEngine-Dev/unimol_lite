@@ -84,7 +84,7 @@ pip install -e ".[dev]"
 
 # Full test suite
 pytest tests/ -q
-# 93 passed, 1 skipped
+# 94 passed, 1 skipped
 
 # Formatting and static checks
 black .

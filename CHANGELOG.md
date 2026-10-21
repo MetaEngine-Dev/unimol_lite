@@ -7,7 +7,7 @@
 ### Added
 
 - 新增 `unimol_lite.training`：掩码原子预训练的数据变换、LMDB 数据集、PyTorch Lightning 模块与损失。
-- 新增 CLI：`unimol-lite prepare-lmdb`、`unimol-lite pretrain`、`unimol-lite selftest`。
+- 新增 CLI：`unimol-lite prepare-lmdb`、`unimol-lite featurize`、`unimol-lite pretrain`、`unimol-lite selftest`。
 - 新增 `train` 可选依赖（`pytorch-lightning`、`pyyaml`、`safetensors`）。
 - 新增中英双语[预训练](docs/zh/training.md)、[命令行接口](docs/zh/cli.md)与[引用与声明](docs/zh/references.md)文档。
 

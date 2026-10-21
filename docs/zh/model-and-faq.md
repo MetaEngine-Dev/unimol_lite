@@ -84,7 +84,7 @@ pip install -e ".[dev]"
 
 # 全量测试
 pytest tests/ -q
-# 93 passed, 1 skipped
+# 94 passed, 1 skipped
 
 # 格式化与静态检查
 black .
