@@ -38,6 +38,7 @@ def test_mask_item_shapes_and_targets():
     assert masked["distance_target"].shape == item["src_distance"].shape
     mask = masked["tokens_target"].ne(0)
     assert mask.any()
+    assert int(mask.sum()) < masked["src_tokens"].numel()
 
 
 def test_pretrain_dataset_collate_and_loss():

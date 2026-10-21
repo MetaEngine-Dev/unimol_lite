@@ -85,10 +85,15 @@ def mask_unimol_item(
     mask[atom_positions[selected]] = True
 
     tokens_target = tokens.copy()
+    # Only selected atom positions are supervised. CLS/SEP and unselected atoms
+    # are padding in the target so the loss and the encoder mask see just the
+    # masked atoms, matching Uni-Mol's masked-token objective.
+    tokens_target[~mask] = int(tokenizer.pad_token_id)
     coord_target = coords.copy()
     noised_tokens = tokens.copy()
     mask_token_id = int(tokenizer.get_vocab()["[MASK]"])
     random_low, random_high = 4, len(tokenizer) - 1  # skip specials and [MASK]
+    noise_mask = np.zeros(length, dtype=bool)
     for position in np.flatnonzero(mask):
         draw = rng.random()
         if draw < random_token_prob:
@@ -97,8 +102,11 @@ def mask_unimol_item(
             noised_tokens[position] = tokens[position]
         else:
             noised_tokens[position] = mask_token_id
+            # Uni-Mol perturbs coordinates only for positions that actually
+            # receive [MASK]; random/left-unmasked positions keep coordinates.
+            noise_mask[position] = True
 
-    noised_coords = _noise_coords(coords, mask, noise_type, noise, rng)
+    noised_coords = _noise_coords(coords, noise_mask, noise_type, noise, rng)
 
     # The encoder sees distances of the perturbed coordinates; the distance
     # head is trained against the original pairwise distances.
