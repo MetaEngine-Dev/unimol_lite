@@ -2,6 +2,8 @@
 
 UniMol-Lite 是 [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) 的简化版本实现。
 
+> 本仓库是独立的第三方实现，**不是** Uni-Mol 官方版本。官方实现、权重与支持请前往 [deepmodeling/Uni-Mol](https://github.com/deepmodeling/Uni-Mol)。
+
 ## 文档 / Documentation
 
 - [文档导航](docs/README.md)（中英双语）
