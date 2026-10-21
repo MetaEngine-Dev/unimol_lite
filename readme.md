@@ -5,8 +5,8 @@ UniMol-Lite 是 [Uni-Mol](https://github.com/dptech-corp/Uni-Mol) 的简化版�
 ## 文档 / Documentation
 
 - [文档导航](docs/README.md)（中英双语）
-- 中文：[概览](docs/zh/index.md) · [快速开始](docs/zh/getting-started.md) · [特征化 API](docs/zh/featurization.md) · [批量与性能](docs/zh/batch-and-performance.md) · [模型、迁移与 FAQ](docs/zh/model-and-faq.md)
-- English: [Overview](docs/en/index.md) · [Getting started](docs/en/getting-started.md) · [Featurization API](docs/en/featurization.md) · [Batch and performance](docs/en/batch-and-performance.md) · [Model, migration and FAQ](docs/en/model-and-faq.md)
+- 中文：[概览](docs/zh/index.md) · [快速开始](docs/zh/getting-started.md) · [特征化 API](docs/zh/featurization.md) · [批量与运行时](docs/zh/batch-and-runtime.md) · [模型、迁移与 FAQ](docs/zh/model-and-faq.md)
+- English: [Overview](docs/en/index.md) · [Getting started](docs/en/getting-started.md) · [Featurization API](docs/en/featurization.md) · [Batch and runtime](docs/en/batch-and-runtime.md) · [Model, migration and FAQ](docs/en/model-and-faq.md)
 
 ## 安装
 
@@ -203,26 +203,17 @@ unimolitem = smiles2unimolitem(smiles, coord_mode="auto")
 - 分子结构分析
 - 等下游任务
 
-## 性能与确定性
+## 运行时与确定性
 
-在 32 vCPU 机器上，125 个代表性分子（重原子 5–80）的批量特征化：
-
-| workers | 时间 | 加速 |
-|---|---|---|
-| 1 | 27.82 s | 1.00× |
-| 4 | 8.73 s | 3.19× |
-| 8 | 5.56 s | **5.00×** |
-
-- 默认 `workers=min(8, cpu)`；继续增加线程收益递减；
-- 大分子可能因 3D 构象生成失败而自动降级 2D（`meta["status"] == "degraded_2d"`）。
+- 默认 `workers=min(8, cpu)`；线程数需要按机器与分子类型自行选择；
+- 大分子可能因 3D 构象生成失败而自动降级 2D（`meta["status"] == "degraded_2d"`）；
+- 公开文档不列性能基准；可在本地运行 `benchmarks/bench_featurize.py` 测量自己的环境。
 
 确定性：
 
 - 同一输入与种子在串行/多线程下结果一致；
 - 结果依赖 RDKit 版本（验证版本 `2025.09.1`）；
 - 启用 `timeout` 时，慢机器上可能降级 2D；需要严格可复现时用 `timeout=None`，或按 `meta["status"]` 过滤。
-
-基准脚本：`benchmarks/bench_featurize.py`。
 
 ## 许可证
 

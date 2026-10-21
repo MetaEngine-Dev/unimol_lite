@@ -26,7 +26,7 @@ UniMol-Lite 把「SMILES → 模型输入」拆成两层：
 | --- | --- |
 | [快速开始](getting-started.md) | 安装、最小可运行示例 |
 | [特征化 API](featurization.md) | 全部函数签名、`coord_mode`、`timeout`、`meta` |
-| [批量与性能](batch-and-performance.md) | 批量语义、基准数据、确定性边界 |
+| [批量与运行时](batch-and-runtime.md) | 批量语义、参数、确定性边界 |
 | [模型、迁移与 FAQ](model-and-faq.md) | 模型 API、`use_3d` 迁移、常见问题、开发测试 |
 
 ## 版本与许可

@@ -1,6 +1,6 @@
-# Batch and performance
+# Batch and runtime
 
-[中文](../zh/batch-and-performance.md) | **English**
+[中文](../zh/batch-and-runtime.md) | **English**
 
 ## Batch semantics
 
@@ -33,18 +33,11 @@
 - Invalid SMILES yield `status="invalid"`; unexpected exceptions yield `status="error"` with the exception type as `reason`.
 - Per-row isolation means **the result list can contain rows with `item=None`**: downstream code must filter on `meta["status"]`.
 
-## Performance
+## Runtime
 
-Batch featurization of 125 representative molecules (5–80 heavy atoms) on a 32-vCPU machine:
-
-| workers | wall clock | speed-up |
-| --- | --- | --- |
-| 1 | 27.82 s | 1.00× |
-| 4 | 8.73 s | 3.19× |
-| 8 | 5.56 s | **5.00×** |
-
-- The default is `workers=min(8, cpu)`; more threads show diminishing returns;
-- Large molecules may fall back to 2D when 3D embedding fails (`status="degraded_2d"`).
+- The default is `workers=min(8, cpu)`; tune threads for your hardware and molecule mix;
+- Large molecules may fall back to 2D when 3D embedding fails (`status="degraded_2d"`);
+- Public docs do not report benchmark conclusions; `benchmarks/bench_featurize.py` can be run locally to measure your own environment.
 
 ## Determinism boundaries
 

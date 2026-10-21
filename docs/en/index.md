@@ -26,7 +26,7 @@ UniMol-Lite splits "SMILES → model input" into two layers:
 | --- | --- |
 | [Getting started](getting-started.md) | Installation, minimal runnable examples |
 | [Featurization API](featurization.md) | Every signature, `coord_mode`, `timeout`, `meta` |
-| [Batch and performance](batch-and-performance.md) | Batch semantics, benchmark numbers, determinism boundaries |
+| [Batch and runtime](batch-and-runtime.md) | Batch semantics, parameters, determinism boundaries |
 | [Model, migration and FAQ](model-and-faq.md) | Model API, `use_3d` migration, common questions, development and tests |
 
 ## Version and license

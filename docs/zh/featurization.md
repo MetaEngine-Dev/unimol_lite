@@ -112,7 +112,7 @@ featurize_batch(
 )
 ```
 
-返回 `list[(item | None, meta)]`，与输入等长保序。语义、参数校验与并行细节见[批量与性能](batch-and-performance.md)。
+返回 `list[(item | None, meta)]`，与输入等长保序。语义、参数校验与并行细节见[批量与运行时](batch-and-runtime.md)。
 
 ## coord_mode
 

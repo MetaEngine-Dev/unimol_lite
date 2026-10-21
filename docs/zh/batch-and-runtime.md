@@ -1,6 +1,6 @@
-# 批量与性能
+# 批量与运行时
 
-**中文** | [English](../en/batch-and-performance.md)
+**中文** | [English](../en/batch-and-runtime.md)
 
 ## 批量语义
 
@@ -33,18 +33,11 @@
 - 非法 SMILES 行为 `status="invalid"`；未预期异常行为 `status="error"`，`reason` 为异常类型名。
 - 单行异常隔离意味着**结果里可能混有 `item=None` 的行**，下游必须按 `meta["status"]` 过滤。
 
-## 性能
+## 运行时
 
-在 32 vCPU 机器上，125 个代表性分子的批量特征化：
-
-| workers | 时间 | 加速 |
-| --- | --- | --- |
-| 1 | 27.82 s | 1.00× |
-| 4 | 8.73 s | 3.19× |
-| 8 | 5.56 s | **5.00×** |
-
-- 默认 `workers=min(8, cpu)`；继续增加线程收益递减；
-- 大分子可能因 3D 构象生成失败而自动降级 2D（`status="degraded_2d"`）。
+- 默认 `workers=min(8, cpu)`；线程数需要按机器与分子类型自行选择；
+- 大分子可能因 3D 构象生成失败而自动降级 2D（`status="degraded_2d"`）；
+- 公开文档不提供性能基准结论；`benchmarks/bench_featurize.py` 可在本地运行，用于测量自己的环境。
 
 ## 确定性边界
 

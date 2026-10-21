@@ -112,7 +112,7 @@ featurize_batch(
 )
 ```
 
-Returns `list[(item | None, meta)]`, the same length as the input and in input order. Semantics, parameter validation and parallelism are covered in [batch and performance](batch-and-performance.md).
+Returns `list[(item | None, meta)]`, the same length as the input and in input order. Semantics, parameter validation and parallelism are covered in [batch and runtime](batch-and-runtime.md).
 
 ## coord_mode
 

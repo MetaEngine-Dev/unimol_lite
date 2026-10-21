@@ -52,7 +52,7 @@ for smi, (item, meta) in zip(smiles_list, results):
     print(smi, "->", meta["status"], shape)
 ```
 
-Results are **the same length as the input and in input order**: an invalid SMILES only spoils its own row (`status="invalid"`) and never aborts the batch. See [batch and performance](batch-and-performance.md) for the details.
+Results are **the same length as the input and in input order**: an invalid SMILES only spoils its own row (`status="invalid"`) and never aborts the batch. See [batch and runtime](batch-and-runtime.md) for the details.
 
 ## Running the tests
 

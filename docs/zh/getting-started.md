@@ -52,7 +52,7 @@ for smi, (item, meta) in zip(smiles_list, results):
     print(smi, "->", meta["status"], shape)
 ```
 
-批量结果与输入**等长保序**：非法 SMILES 只影响自己那一行（`status="invalid"`），不会中断整批。语义细节见[批量与性能](batch-and-performance.md)。
+批量结果与输入**等长保序**：非法 SMILES 只影响自己那一行（`status="invalid"`），不会中断整批。语义细节见[批量与运行时](batch-and-runtime.md)。
 
 ## 运行测试
 
