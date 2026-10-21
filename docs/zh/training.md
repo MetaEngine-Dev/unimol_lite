@@ -98,7 +98,7 @@ trainer:
 | `leave_unmasked_prob` | 选中原子保持原 token 的概率 |
 | 其余选中原子 | 替换为 `[MASK]` |
 | `noise_type` | `uniform`、`normal`、`trunc_normal` 或 `none` |
-| `noise` | 坐标噪声幅度；`uniform` 时每维在 `[-noise, noise]` 采样；只作用于实际使用 `[MASK]` 的原子 |
+| `noise` | 坐标噪声幅度；`uniform` 时每维在 `[-noise, noise]` 采样；只作用于被选中且未保留原 token 的原子 |
 
 > 默认 `0.05 + 0.05` 意味着约 90% 的选中原子使用 `[MASK]`，而不是 BERT 常见的 80/10/10。需要不同比例时直接改配置。
 

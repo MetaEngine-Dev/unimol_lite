@@ -98,12 +98,13 @@ def mask_unimol_item(
         draw = rng.random()
         if draw < random_token_prob:
             noised_tokens[position] = int(rng.integers(random_low, random_high))
+            # The upstream pipeline applies coordinate noise to selected atoms
+            # except those explicitly left unmasked.
+            noise_mask[position] = True
         elif draw < random_token_prob + leave_unmasked_prob:
             noised_tokens[position] = tokens[position]
         else:
             noised_tokens[position] = mask_token_id
-            # Uni-Mol perturbs coordinates only for positions that actually
-            # receive [MASK]; random/left-unmasked positions keep coordinates.
             noise_mask[position] = True
 
     noised_coords = _noise_coords(coords, noise_mask, noise_type, noise, rng)

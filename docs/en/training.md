@@ -11,7 +11,7 @@ Uni-Mol pretraining is a masked-atom modeling task. Each molecule is first conve
 | Objective | Input | Supervision | Default weight |
 | --- | --- | --- | --- |
 | Masked token | Selected atom tokens become `[MASK]`, a random atom, or stay unchanged | Original atom token | `1.0` |
-| Masked coordinate | Noise is added to atoms that actually receive `[MASK]` | Original coordinates | `5.0` |
+| Masked coordinate | Noise is added to selected atoms that are not left unchanged | Original coordinates | `5.0` |
 | Masked distance | Pair distances computed from noisy coordinates | Pair distances of the original coordinates | `10.0` |
 
 The Uni-Mol `x_norm` and pair-representation norm regularizers are kept as well, both with a default weight of `0.01`. All weights are configurable; this repository does not claim that one setting is appropriate for every dataset.
@@ -98,7 +98,7 @@ trainer:
 | `leave_unmasked_prob` | Probability that a selected atom keeps its original token |
 | Remaining selected atoms | Replaced with `[MASK]` |
 | `noise_type` | `uniform`, `normal`, `trunc_normal` or `none` |
-| `noise` | Coordinate noise scale; `uniform` samples each coordinate from `[-noise, noise]`; only atoms that receive `[MASK]` are perturbed |
+| `noise` | Coordinate noise scale; `uniform` samples each coordinate from `[-noise, noise]`; selected atoms left unchanged are not perturbed |
 
 > The default `0.05 + 0.05` means roughly 90% of selected atoms use `[MASK]`, not the 80/10/10 split often used by BERT. Change the configuration if you need a different ratio.
 

@@ -80,7 +80,7 @@ class LMDBPretrainDataset(Dataset):
             raise FileNotFoundError("LMDB does not exist: %s" % path)
         self.env = lmdb.open(
             str(path),
-            subdir=False,
+            subdir=path.is_dir(),
             readonly=True,
             lock=False,
             readahead=False,
