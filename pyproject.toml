@@ -4,8 +4,8 @@ requires = ["hatchling>=1.18"]
 
 [project]
 name = "unimol_lite"
-version = "0.1.1"
-description = "简化版Uni-Mol"
+version = "0.2.0"
+description = "简化版Uni-Mol：特征化与预训练"
 readme = "readme.md"
 keywords = ["Uni-Mol", "Deep Learning"]
 license = { text = "MIT" }
@@ -30,9 +30,15 @@ dependencies = [
   "numpy>=1.26,<2",
   "lmdb>=1.4",
   "torch>=2.0",
+  "tqdm>=4.65",
 ]
 
 [project.optional-dependencies]
+train = [
+  "pytorch-lightning>=2.4",
+  "pyyaml>=6",
+  "safetensors>=0.4",
+]
 dev = [
   "black>=24.0.0",
   "pytest>=8.0.0",
@@ -40,6 +46,9 @@ dev = [
   "isort>=5.13.0",
   "flake8>=7.0.0",
 ]
+
+[project.scripts]
+unimol-lite = "unimol_lite.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["unimol_lite"]
@@ -50,6 +59,7 @@ include = [
   "/tests",
   "/benchmarks",
   "/examples",
+  "/docs",
   "/readme.md",
   "/CHANGELOG.md",
   "/LICENSE",

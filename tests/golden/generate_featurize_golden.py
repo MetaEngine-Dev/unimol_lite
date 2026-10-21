@@ -4,7 +4,7 @@
 
     python tests/golden/generate_featurize_golden.py
 
-覆盖用例（见 `_dev/分子采样性能优化/02-施工路线图.md` 批次 1）：
+覆盖用例：
 
 - cco / aspirin / hmdb_60_80 / large_2d：走 `smiles2unimolitem`，
   统一传 `use_3d=False`（等价改造后的 `coord_mode="auto"`）；

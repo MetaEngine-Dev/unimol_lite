@@ -28,7 +28,7 @@ OnTimeout = Literal["fallback_2d", "error", "skip"]
 #: They must be re-enabled explicitly, otherwise every conformer generated on
 #: the ``timeout`` path would silently differ from the legacy path
 #: (verified: ``timeout=None`` vs ``timeout=60`` bitwise identical only with
-#: these flags set). See ``_dev/分子采样性能优化/04-施工日志.md``.
+#: these flags set).
 _LEGACY_ETKDG_FLAGS = dict(
     useExpTorsionAnglePrefs=True,
     useBasicKnowledge=True,

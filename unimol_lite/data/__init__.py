@@ -1,5 +1,6 @@
 from .collate_fn import unimol_collate_fn
 from .prepare_unimol_item import FeaturizationTimeout, smiles2unimolitem, generate_unimolitem
+from .prepare_lmdb import prepare_lmdb
 from .smiles2coords import smiles2coords
 from .unimol_dataset import BaseDataset, LMDBDataset
 
@@ -16,4 +17,5 @@ __all__ = [
     "BaseDataset",
     "LMDBDataset",
     "featurize_batch",
+    "prepare_lmdb",
 ]

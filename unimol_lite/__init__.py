@@ -6,4 +6,5 @@
 from . import data  # noqa: F401
 from .batch import featurize_batch
 
-__all__ = ["featurize_batch"]
+__version__ = "0.2.0"
+__all__ = ["featurize_batch", "__version__"]

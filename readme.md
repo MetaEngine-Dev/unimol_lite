@@ -1,21 +1,24 @@
 # UniMol-Lite
 
-UniMol-Lite 是 [Uni-Mol](https://github.com/dptech-corp/Uni-Mol) 的简化版本实现。
+UniMol-Lite 是 [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) 的简化版本实现。
 
 ## 文档 / Documentation
 
 - [文档导航](docs/README.md)（中英双语）
-- 中文：[概览](docs/zh/index.md) · [快速开始](docs/zh/getting-started.md) · [特征化 API](docs/zh/featurization.md) · [批量与运行时](docs/zh/batch-and-runtime.md) · [模型、迁移与 FAQ](docs/zh/model-and-faq.md)
-- English: [Overview](docs/en/index.md) · [Getting started](docs/en/getting-started.md) · [Featurization API](docs/en/featurization.md) · [Batch and runtime](docs/en/batch-and-runtime.md) · [Model, migration and FAQ](docs/en/model-and-faq.md)
+- 中文：[概览](docs/zh/index.md) · [快速开始](docs/zh/getting-started.md) · [特征化 API](docs/zh/featurization.md) · [批量与运行时](docs/zh/batch-and-runtime.md) · [模型、迁移与 FAQ](docs/zh/model-and-faq.md) · [预训练](docs/zh/training.md) · [命令行接口](docs/zh/cli.md) · [引用与声明](docs/zh/references.md)
+- English: [Overview](docs/en/index.md) · [Getting started](docs/en/getting-started.md) · [Featurization API](docs/en/featurization.md) · [Batch and runtime](docs/en/batch-and-runtime.md) · [Model, migration and FAQ](docs/en/model-and-faq.md) · [Pretraining](docs/en/training.md) · [CLI](docs/en/cli.md) · [References](docs/en/references.md)
 
 ## 安装
 
 ```shell
-# 安装 tag v0.1.1
-pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.1.1"
+# 安装 tag v0.2.0
+pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.2.0"
 
 # 开发环境设置（可编辑安装 + 开发依赖）
 pip install -e ".[dev]"
+
+# 预训练额外依赖
+pip install -e ".[train]"
 
 # 运行测试
 pytest tests/ -q
@@ -26,7 +29,7 @@ isort .
 flake8 .
 ```
 
-> 仓库目前为私有，公开后以上 HTTPS 地址可直接使用；维护者访问私有仓库时可改用 SSH：`pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git@v0.1.1"`。
+> 仓库目前为私有，公开后以上 HTTPS 地址可直接使用；维护者访问私有仓库时可改用 SSH：`pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git@v0.2.0"`。
 
 ## 使用示例
 
@@ -54,8 +57,8 @@ df = pd.read_csv("examples/example_prepare_lmdb.csv")
 ```
 
 ```shell
-# 使用脚本批量转换
-python examples/prepare_lmdb.py -i input.csv -o output.lmdb -c SMILES_COLUMN
+# 使用内置 CLI 批量转换
+unimol-lite prepare-lmdb -i input.csv -o output.lmdb --smiles-column SMILES_COLUMN
 ```
 
 2. 使用 LMDBDataset 加载数据:
@@ -191,7 +194,32 @@ unimolitem = smiles2unimolitem(smiles, coord_mode="auto")
 > 注意：旧默认 `use_3d=True` 对所有尺寸走 3D，而 `coord_mode="auto"` 对 >400 原子走 2D——若原来依赖超大分子的 3D 结果，请显式用 `coord_mode="3d"`。
 > 若希望把调用点的 dask 进程池换成库内线程池，可用 `featurize_batch(smiles_list, workers=8, timeout=30.0)`（等长保序，逐项状态）。
 
-### 3. 输出说明
+### 3. 预训练与命令行
+
+```shell
+# 安装预训练依赖
+pip install -e ".[train]"
+
+# 数据准备
+unimol-lite prepare-lmdb \
+  --input input.csv \
+  --output molecules.lmdb \
+  --smiles-column smiles \
+  --nproc 8
+
+# 掩码原子预训练
+unimol-lite pretrain \
+  --lmdb molecules.lmdb \
+  --output-dir runs/pretrain \
+  --config pretrain.yaml
+
+# 不训练，只做前向/损失自检
+unimol-lite selftest
+```
+
+预训练的掩码策略、YAML 配置、输出目录和限制见[预训练](docs/zh/training.md)；全部子命令与参数见[命令行接口](docs/zh/cli.md)。训练完成后，`runs/pretrain/pretrained/` 是 HuggingFace 风格的推理导出，可直接用 `UniMolModel.from_pretrained(...)` 加载。
+
+### 4. 输出说明
 
 模型输出包含两部分:
 1. encoder_output: 分子/原子级别的表示,形状为 [batch_size, seq_len, hidden_dim]
@@ -215,6 +243,20 @@ unimolitem = smiles2unimolitem(smiles, coord_mode="auto")
 - 结果依赖 RDKit 版本（验证版本 `2025.09.1`）；
 - 启用 `timeout` 时，慢机器上可能降级 2D；需要严格可复现时用 `timeout=None`，或按 `meta["status"]` 过滤。
 
-## 许可证
+## 引用、官方版本与许可证
 
-本项目采用 MIT 许可证。详见 [LICENSE](LICENSE) 文件。
+`unimol_lite` 是独立的第三方实现，**不是** Uni-Mol 官方版本。需要官方实现、官方预训练权重或官方支持时，请前往 [deepmodeling/Uni-Mol](https://github.com/deepmodeling/Uni-Mol)。
+
+使用本项目时请同时引用 Uni-Mol 原始论文：
+
+```bibtex
+@inproceedings{zhou2023unimol,
+  title     = {Uni-Mol: A Universal 3D Molecular Representation Learning Framework},
+  author    = {Gengmo Zhou and Zhifeng Gao and Qiankun Ding and Hang Zheng and Hongteng Xu and Zhewei Wei and Linfeng Zhang and Guolin Ke},
+  booktitle = {The Eleventh International Conference on Learning Representations},
+  year      = {2023},
+  url       = {https://openreview.net/forum?id=6K2RM6wVqKu}
+}
+```
+
+本项目采用 **MIT License**，详见 [LICENSE](LICENSE)；上游 Uni-Mol 同样使用 MIT License。本仓库不分发官方预训练权重或受单独条款约束的数据。完整说明见[引用与声明](docs/zh/references.md)。

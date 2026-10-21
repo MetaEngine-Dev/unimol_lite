@@ -1,6 +1,6 @@
 """Parallel batch featurization built on :func:`smiles2unimolitem`.
 
-Design notes (see ``_dev/分子采样性能优化/01-目标与设计.md`` §5.4):
+Design notes:
 
 - **equal length, input order**: results are collected by input index, so the
   output has exactly one entry per input SMILES (duplicates are *not* folded);

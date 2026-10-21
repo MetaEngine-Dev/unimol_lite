@@ -53,8 +53,7 @@ def make_rng(seed, *addl_seeds):
 
     ``np.random.RandomState`` is required (not ``default_rng``): only the former
     reproduces the historical global-seed sequences bit-for-bit, which keeps
-    ``>256`` atom random truncation identical to previous releases
-    (see ``_dev/分子采样性能优化/01-目标与设计.md`` §5.2).
+    ``>256`` atom random truncation identical to previous releases.
 
     ``seed is None`` keeps the legacy semantics of ``numpy_seed(None)`` — the
     global generator is used as-is (no seeding, hence no reproducibility).

@@ -132,9 +132,11 @@ class UniMolModel(PreTrainedModel):
                 attn_probs = self.pair2coord_proj(delta_encoder_pair_rep)
                 coord_update = delta_pos / atom_num * attn_probs
                 # Mask padding
-                pair_coords_mask = (1 - padding_mask.float()).unsqueeze(-1) * (1 - padding_mask.float()).unsqueeze(1)
-                coord_update = coord_update * pair_coords_mask.unsqueeze(-1)
-                #
+                if padding_mask is not None:
+                    pair_coords_mask = (1 - padding_mask.float()).unsqueeze(-1) * (
+                        1 - padding_mask.float()
+                    ).unsqueeze(1)
+                    coord_update = coord_update * pair_coords_mask.unsqueeze(-1)
                 coord_update = torch.sum(coord_update, dim=2)
                 encoder_coord = coords_emb + coord_update
             if self.configs.masked_dist_loss > 0:

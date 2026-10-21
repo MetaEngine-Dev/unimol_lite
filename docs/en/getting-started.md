@@ -10,13 +10,13 @@
 ## Installation
 
 ```shell
-pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.1.1"
+pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.2.0"
 ```
 
 The repository is currently private; once it is public the HTTPS address above works as-is. Maintainers can use SSH while the repository stays private:
 
 ```shell
-pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git@v0.1.1"
+pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git@v0.2.0"
 ```
 
 For development (editable install plus dev extras):
@@ -58,6 +58,6 @@ Results are **the same length as the input and in input order**: an invalid SMIL
 
 ```shell
 pytest tests/ -q
-# 89 passed, 1 skipped
+# 93 passed, 1 skipped
 ```
 

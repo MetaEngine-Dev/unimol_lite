@@ -2,7 +2,7 @@
 
 [中文](../zh/index.md) | **English**
 
-A lightweight implementation of [Uni-Mol](https://github.com/dptech-corp/Uni-Mol): a complete path from SMILES to model inputs (RDKit conformer generation + tensorization), plus a forward-model API.
+A lightweight implementation of [Uni-Mol](https://github.com/deepmodeling/Uni-Mol): a complete path from SMILES to model inputs (RDKit conformer generation + tensorization), plus a forward-model API and masked-atom pretraining.
 
 ## What this is
 
@@ -28,7 +28,10 @@ UniMol-Lite splits "SMILES → model input" into two layers:
 | [Featurization API](featurization.md) | Every signature, `coord_mode`, `timeout`, `meta` |
 | [Batch and runtime](batch-and-runtime.md) | Batch semantics, parameters, determinism boundaries |
 | [Model, migration and FAQ](model-and-faq.md) | Model API, `use_3d` migration, common questions, development and tests |
+| [Pretraining](training.md) | Masked-atom pretraining, data preparation, configuration, output |
+| [Command-line interface](cli.md) | `unimol-lite` subcommands and options |
+| [References and notices](references.md) | Official repository, citation, license, non-official notice |
 
 ## Version and license
 
-Current version `0.1.1` (tag `v0.1.1`), installed via git. Licensed under MIT. The code derives from [Uni-Mol](https://github.com/dptech-corp/Uni-Mol) (DP Technology, MIT).
+Current version `0.2.0`, licensed under MIT. The code derives from [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) (DP Technology, MIT). This repository is not the official Uni-Mol release; use the upstream repository for the official implementation or weights.

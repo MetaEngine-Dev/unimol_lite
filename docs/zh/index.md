@@ -2,7 +2,7 @@
 
 **中文** | [English](../en/index.md)
 
-[Uni-Mol](https://github.com/dptech-corp/Uni-Mol) 的轻量实现：一条从 SMILES 到模型输入的完整通路（RDKit 构象生成 + 张量化），并提供前向模型 API。
+[Uni-Mol](https://github.com/deepmodeling/Uni-Mol) 的轻量实现：一条从 SMILES 到模型输入的完整通路（RDKit 构象生成 + 张量化），提供前向模型 API 与掩码原子预训练。
 
 ## 这是什么
 
@@ -28,7 +28,10 @@ UniMol-Lite 把「SMILES → 模型输入」拆成两层：
 | [特征化 API](featurization.md) | 全部函数签名、`coord_mode`、`timeout`、`meta` |
 | [批量与运行时](batch-and-runtime.md) | 批量语义、参数、确定性边界 |
 | [模型、迁移与 FAQ](model-and-faq.md) | 模型 API、`use_3d` 迁移、常见问题、开发测试 |
+| [预训练](training.md) | 掩码原子预训练、数据准备、配置、输出 |
+| [命令行接口](cli.md) | `unimol-lite` 子命令与参数 |
+| [引用与声明](references.md) | 官方仓库、论文引用、许可证与非官方声明 |
 
 ## 版本与许可
 
-当前版本 `0.1.1`（tag `v0.1.1`），通过 git 安装；许可证 MIT。代码源自 [Uni-Mol](https://github.com/dptech-corp/Uni-Mol)（DP Technology，MIT）。
+当前版本 `0.2.0`，许可证 MIT。代码源自 [Uni-Mol](https://github.com/deepmodeling/Uni-Mol)（DP Technology，MIT）。本仓库不是 Uni-Mol 官方版本；需要官方实现或权重请前往官方仓库。

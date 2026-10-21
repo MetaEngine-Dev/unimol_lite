@@ -1,12 +1,28 @@
 # Changelog
 
-本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 的组织方式，当前版本为 `0.1.1`（tag `v0.1.1`）。
+本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 的组织方式，当前版本为 `0.2.0`。
+
+## [0.2.0]
+
+### Added
+
+- 新增 `unimol_lite.training`：掩码原子预训练的数据变换、LMDB 数据集、PyTorch Lightning 模块与损失。
+- 新增 CLI：`unimol-lite prepare-lmdb`、`unimol-lite pretrain`、`unimol-lite selftest`。
+- 新增 `train` 可选依赖（`pytorch-lightning`、`pyyaml`、`safetensors`）。
+- 新增中英双语[预训练](docs/zh/training.md)、[命令行接口](docs/zh/cli.md)与[引用与声明](docs/zh/references.md)文档。
+
+### Changed
+
+- `UniMolConfig` 新增 `x_norm_loss` 字段。
+- 模型在无 padding 的单分子输入下也能计算坐标预训练分支。
+- 预训练导出为 HuggingFace 风格的 `pretrained/` 目录，`config.json` 的 `mode` 为 `infer`。
+- 版本号更新为 `0.2.0`。
 
 ## [0.1.1]
 
 ### Changed
 
-- 文档：清理面向用户的表述，统一安装与性能说明。
+- 文档：清理面向用户的表述，统一安装与运行时说明。
 
 ## [0.1.0]
 
@@ -28,11 +44,10 @@
 - `timeout` 覆盖构象生成与 MMFF 优化；超预算同样按 `on_timeout` 降级/报错/跳过。
 - 批量层对非法参数（`coord_mode` / `on_timeout` / `timeout` / `workers` / `window`）在提交前抛 `ValueError`；单行异常隔离为 `status="error"`，不中断整批。
 
-### Performance
+### Runtime
 
-- 在 32 vCPU 机器上，125 个代表性分子：串行 27.82 s → 4 线程 8.73 s（3.19×）→ 8 线程 5.56 s（**5.00×**）。
 - 大分子可能因 3D 构象生成失败而自动降级 2D。
-- 启用 `timeout` 后，单个坏分子不会拖慢整批。
+- 启用 `timeout` 后，单个分子的构象生成受预算约束。
 
 ### Tests
 

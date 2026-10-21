@@ -21,6 +21,7 @@ class UniMolConfig(PretrainedConfig):
         pooler_activation_fn="tanh",
         post_ln=False,
         mode="infer",
+        x_norm_loss=-1.0,
         delta_pair_repr_norm_loss=-1.0,
         masked_token_loss=-1.0,
         masked_coord_loss=-1.0,
@@ -41,6 +42,7 @@ class UniMolConfig(PretrainedConfig):
         self.pooler_activation_fn = pooler_activation_fn
         self.post_ln = post_ln
         self.mode = mode
+        self.x_norm_loss = x_norm_loss
         self.delta_pair_repr_norm_loss = delta_pair_repr_norm_loss
         self.masked_token_loss = masked_token_loss
         self.masked_coord_loss = masked_coord_loss
