@@ -47,6 +47,8 @@ The repository does not ship official Uni-Mol weights or training data. To get m
 
 ### Install
 
+Python `>=3.10,<3.12` (3.10 or 3.11) is required.
+
 ```bash
 python -m pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.2.1"
 ```
@@ -139,6 +141,8 @@ UniMol-Lite 是 [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) 的轻量实�
 - UniMol-Lite 是 Uni-Mol 的修改版实现，不是官方版本。
 
 ### 安装
+
+需要 Python `>=3.10,<3.12`（3.10 或 3.11）。
 
 ```bash
 python -m pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.2.1"

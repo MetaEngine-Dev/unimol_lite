@@ -4,7 +4,7 @@
 
 **层级：** 1 — 开始
 
-**前置条件：** Python `>=3.10,<3.12` 与 `pip`。
+**前置条件：** Python `>=3.10,<3.12`（3.10 或 3.11）与 `pip`。
 
 ## 从 Git 安装
 
@@ -17,6 +17,8 @@ python -m pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.
 ```shell
 python -m pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git@v0.2.1"
 ```
+
+`smiles2class` 以相同的 Python 范围依赖本库；组合安装时请使用 Python 3.10 或 3.11。
 
 ## 开发安装
 
