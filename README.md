@@ -78,7 +78,7 @@ unimol-lite selftest
 
 ### Status
 
-Featurization, batch runtime, pretraining and CLI are covered by tests. Tests use synthetic/small inputs; there is no CI in this repository.
+Featurization, batch runtime, pretraining and CLI are covered by tests. Tests use synthetic/small inputs.
 
 ### Authors
 
@@ -171,7 +171,7 @@ unimol-lite selftest
 
 ### 状态
 
-特征化、批量运行时、预训练与 CLI 有测试覆盖；测试使用合成/小规模输入，仓库没有 CI。
+特征化、批量运行时、预训练与 CLI 有测试覆盖；测试使用合成/小规模输入。
 
 ### 作者
 

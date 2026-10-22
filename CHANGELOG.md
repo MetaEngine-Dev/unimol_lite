@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 新增 `AUTHORS`、`NOTICE`、`CITATION.cff`；README 改为英文优先的双语结构。
 - 包元数据改用 `license = { file = "LICENSE" }`，补充 classifiers、项目主页与 sdist 文件清单。
 - 恢复 README 中的 Uni-Mol 论文引用，并把该引用加入 `CITATION.cff` 与 `NOTICE`。
+- 公开文档移除“内部工单/开发笔记”等内部过程表述，改为面向用户的“你需要自备”；移除公开 README 中的 CI 说明。
 
 ## [0.2.1] - 2026-10-22
 

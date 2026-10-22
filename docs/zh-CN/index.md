@@ -24,11 +24,11 @@ UniMol-Lite 是 [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) 的轻量实�
 - **需要模型？** 在本地训练或导出；仓库不附带官方权重。见[预训练](./06-training.md)。
 - **需要命令？** [命令行接口](./07-cli.md)。
 
-## 仓库里没有
+## 你需要自备
 
-- Uni-Mol 官方预训练权重
-- 训练数据或 LMDB 文件
-- 内部工单或开发笔记
+- 需要特征化的 SMILES；预训练时还需要自己的 3D 构象数据或 LMDB。
+- 需要加载的模型目录：本仓库不附带官方权重，按[预训练](./06-training.md)训练并导出，或使用已有的导出目录。
+- 如需官方 Uni-Mol 权重，请从上游获取。
 
 作者见 [`AUTHORS`](../../AUTHORS)，仓库包含什么见 [`NOTICE`](../../NOTICE)。
 

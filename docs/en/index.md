@@ -24,11 +24,11 @@ UniMol-Lite is a lightweight implementation of [Uni-Mol](https://github.com/deep
 - **Need a model?** Train or export one locally; no official weights are shipped. See [Pretraining](./06-training.md).
 - **Need a command?** [CLI](./07-cli.md).
 
-## Not in this repo
+## What you need to provide
 
-- official Uni-Mol pretrained weights
-- training data or LMDB files
-- internal work orders or development notes
+- SMILES to featurize; for pretraining, your own 3D conformer data or an LMDB.
+- A model directory to load: no official weights are shipped; train and export one with [Pretraining](./06-training.md), or use an existing export.
+- For official Uni-Mol weights, obtain them upstream.
 
 Authors are in [`AUTHORS`](../../AUTHORS). What is shipped is in [`NOTICE`](../../NOTICE).
 
