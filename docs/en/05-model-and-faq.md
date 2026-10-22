@@ -1,6 +1,10 @@
 # Model, migration and FAQ
 
-[中文](../zh/model-and-faq.md) | **English** · [Documentation home](../../README.md#en)
+[中文](../zh-CN/05-model-and-faq.md) | **English** · [Documentation home](../../README.md#english)
+
+**Level:** 3 — Reference
+
+**Prerequisites:** [Quickstart](./02-quickstart.md).
 
 ## Model API
 
@@ -80,3 +84,5 @@ black .
 isort .
 flake8 .
 ```
+
+**Next:** [Pretraining](./06-training.md)

@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+title: "UniMol-Lite"
+abstract: "Lightweight implementation of Uni-Mol for SMILES featurization, model inference and masked-atom pretraining."
+version: "0.2.1"
+date-released: "2026-10-22"
+license: MIT
+authors:
+  - family-names: "Guo"
+    given-names: "Lvjun"
+    alias: "Ficere"
+    email: "gljx898989@163.com"
+  - family-names: "Niteas"
+    given-names: "David"
+    email: "david.ql.d@foxmail.com"
+repository-code: "https://github.com/MetaEngine-Dev/unimol_lite"

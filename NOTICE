@@ -1,0 +1,23 @@
+UniMol-Lite
+===========
+
+UniMol-Lite is a lightweight, independent implementation of Uni-Mol for SMILES
+featurization, model inference and masked-atom pretraining.
+
+Authors
+-------
+Lvjun Guo (Ficere) <gljx898989@163.com>
+David Niteas <david.ql.d@foxmail.com>
+
+What's shipped
+--------------
+This repository contains code, configuration and documentation only. It does not
+include official Uni-Mol pretrained weights, training data or LMDB files.
+
+UniMol-Lite is not the official Uni-Mol release and is not maintained or
+endorsed by the Uni-Mol authors. The official implementation and weights are
+available at https://github.com/deepmodeling/Uni-Mol.
+
+License
+-------
+MIT. See LICENSE.

@@ -163,3 +163,8 @@ ckpt
 *.ipynb
 unimol_lite/_version.py
 base_unimol/
+/data/
+/work/
+/runs/
+/artifacts/
+*.lmdb

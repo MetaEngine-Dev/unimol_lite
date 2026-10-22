@@ -1,6 +1,10 @@
 # 批量与运行时
 
-**中文** | [English](../en/batch-and-runtime.md) · [返回主页](../../README.md#zh)
+**中文** | [English](../en/04-batch-and-runtime.md) · [返回主页](../../README.md#zh-cn)
+
+**层级：** 2 — 使用
+
+**前置条件：** [特征化 API](./03-featurization.md)。
 
 ## 批量语义
 
@@ -50,3 +54,5 @@
 - 数据量大、单分子耗时波动大（含长链脂类等易嵌入失败的分子）时，`featurize_batch(..., timeout=30.0)` 可避免单个坏分子阻塞整批。
 - 需要逐行审计（哪些分子降级 2D、哪些解析失败）时，`meta` 已给出状态，无需额外捕获异常。
 - 分子数量很少，或调用方已有调度器时，可直接调用 `smiles2unimolitem`。
+
+**下一页：** [模型、迁移与 FAQ](./05-model-and-faq.md)

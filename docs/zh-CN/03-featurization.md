@@ -1,6 +1,10 @@
 # 特征化 API
 
-**中文** | [English](../en/featurization.md) · [返回主页](../../README.md#zh)
+**中文** | [English](../en/03-featurization.md) · [返回主页](../../README.md#zh-cn)
+
+**层级：** 2 — 使用
+
+**前置条件：** [安装](./01-installation.md)。
 
 ## 总览
 
@@ -68,7 +72,7 @@ smiles2unimolitem(
 - `coord_pool_count` 生成多个构象后按 `random_seed` 采样一个；`rng_seed` 可单独指定随机种子（默认取 `random_seed`）。
 - `max_atoms` 为截断上限，超限时用局部 RNG 随机保留 `max_atoms` 个原子。
 - `normalize_coord=True` 时坐标按质心平移。
-- `use_3d` 已弃用，见[迁移说明](model-and-faq.md)。
+- `use_3d` 已弃用，见[迁移说明](05-model-and-faq.md)。
 - `return_meta=True` 返回 `(item | None, meta)`；默认 `False` 只返回 `item`。
 
 返回值约定（`return_meta=False`）：
@@ -112,7 +116,7 @@ featurize_batch(
 )
 ```
 
-返回 `list[(item | None, meta)]`，与输入等长保序。语义、参数校验与并行细节见[批量与运行时](batch-and-runtime.md)。
+返回 `list[(item | None, meta)]`，与输入等长保序。语义、参数校验与并行细节见[批量与运行时](04-batch-and-runtime.md)。
 
 ## coord_mode
 
@@ -165,3 +169,5 @@ featurize_batch(
 ## 确定性
 
 随机性全部来自每次调用创建的局部 `np.random.RandomState`，不读写全局 `np.random` 状态；同一输入 + 同一种子在单线程/多线程下结果一致。结果绑定 RDKit 版本（已验证 `2025.09.1`）；启用 `timeout` 时，同一分子在不同机器或不同负载下可能 3D 成功、也可能降级 2D。需要可复现输出时用 `timeout=None`，或按 `meta["status"]` 过滤降级行。
+
+**下一页：** [批量与运行时](./04-batch-and-runtime.md)

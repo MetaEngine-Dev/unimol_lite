@@ -1,6 +1,10 @@
 # Command-line interface
 
-[中文](../zh/cli.md) | **English** · [Documentation home](../../README.md#en)
+[中文](../zh-CN/07-cli.md) | **English** · [Documentation home](../../README.md#english)
+
+**Level:** 3 — Reference
+
+**Prerequisites:** [Quickstart](./02-quickstart.md).
 
 After installation, use the `unimol-lite` command. Without installation, `python -m unimol_lite.cli` can be used instead.
 
@@ -100,7 +104,7 @@ unimol-lite pretrain \
 | `--resume` | Resume from a checkpoint |
 | `--quiet` | Suppress the completion message |
 
-Command-line values override matching YAML values. See [Pretraining](training.md) for configuration fields and output layout.
+Command-line values override matching YAML values. See [Pretraining](06-training.md) for configuration fields and output layout.
 
 ## selftest
 
@@ -130,3 +134,5 @@ Errors go to stderr, for example:
 ```text
 unimol-lite: error: pretraining requires pytorch-lightning; install with '.[train]'
 ```
+
+**Next:** [Why code-only](./08-why-code-only.md)

@@ -1,6 +1,10 @@
 # Featurization API
 
-[中文](../zh/featurization.md) | **English** · [Documentation home](../../README.md#en)
+[中文](../zh-CN/03-featurization.md) | **English** · [Documentation home](../../README.md#english)
+
+**Level:** 2 — Use
+
+**Prerequisites:** [Installation](./01-installation.md).
 
 ## Overview
 
@@ -68,7 +72,7 @@ Notable parameters:
 - `coord_pool_count` generates several conformers and samples one with `random_seed`; `rng_seed` sets the seed for all random draws independently (defaults to `random_seed`).
 - `max_atoms` caps the atom count; excess atoms are subsampled with a local RNG.
 - `normalize_coord=True` centers the coordinates on their mean.
-- `use_3d` is deprecated; see the [migration notes](model-and-faq.md).
+- `use_3d` is deprecated; see the [migration notes](05-model-and-faq.md).
 - `return_meta=True` returns `(item | None, meta)`; the default `False` returns just `item`.
 
 Return conventions with `return_meta=False`:
@@ -112,7 +116,7 @@ featurize_batch(
 )
 ```
 
-Returns `list[(item | None, meta)]`, the same length as the input and in input order. Semantics, parameter validation and parallelism are covered in [batch and runtime](batch-and-runtime.md).
+Returns `list[(item | None, meta)]`, the same length as the input and in input order. Semantics, parameter validation and parallelism are covered in [batch and runtime](04-batch-and-runtime.md).
 
 ## coord_mode
 
@@ -165,3 +169,5 @@ Returns `list[(item | None, meta)]`, the same length as the input and in input o
 ## Determinism
 
 All randomness comes from a local `np.random.RandomState` created per call; the global `np.random` state is never touched, so identical inputs and seeds are identical in serial and multi-threaded runs. Results are tied to the RDKit version (validated with `2025.09.1`). With `timeout` enabled, the same molecule may embed in 3D on one machine (or under one load) and degrade to 2D on another. For reproducible output use `timeout=None`, or filter degraded rows by `meta["status"]`.
+
+**Next:** [Batch and runtime](./04-batch-and-runtime.md)

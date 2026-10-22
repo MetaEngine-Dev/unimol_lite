@@ -1,6 +1,10 @@
 # 引用与声明
 
-**中文** | [English](../en/references.md) · [返回主页](../../README.md#zh)
+**中文** | [English](../en/09-references.md) · [返回主页](../../README.md#zh-cn)
+
+**层级：** 3 — 参考
+
+**前置条件：** [为什么只发代码](./08-why-code-only.md)。
 
 ## 本项目与官方 Uni-Mol 的关系
 
@@ -34,3 +38,5 @@
 - 本项目 `unimol_lite` 以 **MIT License** 发布，完整文本见仓库根目录的 [`LICENSE`](../../LICENSE)。
 - 上游 [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) 同样使用 MIT License；本项目的部分实现与接口参考了上游代码与文档。
 - 本项目不分发 Uni-Mol 官方预训练权重或其他受单独条款约束的数据。另行下载权重或数据时，应遵守其来源页面的许可与使用条款。
+
+**下一页：** [文档索引](./index.md)

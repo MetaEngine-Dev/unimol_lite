@@ -1,6 +1,10 @@
 # References and notices
 
-[中文](../zh/references.md) | **English** · [Documentation home](../../README.md#en)
+[中文](../zh-CN/09-references.md) | **English** · [Documentation home](../../README.md#english)
+
+**Level:** 3 — Reference
+
+**Prerequisites:** [Why code-only](./08-why-code-only.md).
 
 ## Relationship to official Uni-Mol
 
@@ -34,3 +38,5 @@ When using this project or derivative work, cite the original Uni-Mol paper:
 - `unimol_lite` is released under the **MIT License**; the full text is in [`LICENSE`](../../LICENSE) at the repository root.
 - Upstream [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) is also MIT-licensed. Parts of this project's implementation and interfaces reference the upstream code and documentation.
 - This project does not distribute official Uni-Mol pretrained weights or data covered by separate terms. Weights or data downloaded separately remain subject to their source terms.
+
+**Next:** [Documentation index](./index.md)

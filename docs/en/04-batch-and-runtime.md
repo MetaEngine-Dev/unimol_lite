@@ -1,6 +1,10 @@
 # Batch and runtime
 
-[中文](../zh/batch-and-runtime.md) | **English** · [Documentation home](../../README.md#en)
+[中文](../zh-CN/04-batch-and-runtime.md) | **English** · [Documentation home](../../README.md#english)
+
+**Level:** 2 — Use
+
+**Prerequisites:** [Featurization API](./03-featurization.md).
 
 ## Batch semantics
 
@@ -50,3 +54,5 @@
 - Large datasets with variable per-molecule cost (long-chain lipids and other hard-to-embed molecules) benefit from `featurize_batch(..., timeout=30.0)`, which keeps a bad molecule from stalling the whole run.
 - For per-row auditing (which molecules degraded to 2D, which failed to parse), `meta` provides the status without additional exception handling.
 - For a small number of molecules, or when the caller already has a scheduler, call `smiles2unimolitem` directly.
+
+**Next:** [Model, migration and FAQ](./05-model-and-faq.md)

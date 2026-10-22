@@ -1,6 +1,10 @@
 # Pretraining
 
-[中文](../zh/training.md) | **English** · [Documentation home](../../README.md#en)
+[中文](../zh-CN/06-training.md) | **English** · [Documentation home](../../README.md#english)
+
+**Level:** 2 — Use
+
+**Prerequisites:** [Featurization API](./03-featurization.md).
 
 This page shows how to run Uni-Mol-style masked-atom pretraining with `unimol-lite` on local 3D conformer data. The implementation follows the [official Uni-Mol pretraining code](https://github.com/deepmodeling/Uni-Mol) as a reference, but it is not the official implementation and does not distribute official pretrained weights.
 
@@ -44,7 +48,7 @@ unimol-lite prepare-lmdb \
 - `--coord-mode auto|3d|2d` has the same meaning as in `smiles2unimolitem`; `auto` may use 2D coordinates for large molecules.
 - `--timeout` is the wall-clock budget per conformer.
 - Rows that fail parsing or conformer generation are **skipped** by default. `--keep-errors` stores them with an empty `item` and an `error` field; the pretraining dataset skips empty items when reading.
-- Each LMDB entry stores `{"smiles": str, "item": {...}}`; `item` follows the [featurization API](featurization.md).
+- Each LMDB entry stores `{"smiles": str, "item": {...}}`; `item` follows the [featurization API](03-featurization.md).
 - `--nproc 1` runs serially and is convenient for debugging; multi-process mode aggregates progress by row.
 
 ## 2. Configuration
@@ -174,4 +178,6 @@ It featurizes `CCO`, builds a temporary 1-layer, 32-dimensional model, computes 
 - This implementation focuses on the main "masked atoms + coordinate/distance recovery" pretraining path. It does not include every augmentation, 2D-conformer combination or distributed-training setting from the official repository.
 - Data quality, conformer settings and the RDKit version all affect results; regenerate the LMDB after changing data or upgrading RDKit.
 - This project is not the official Uni-Mol release and does not distribute official pretrained weights. The official implementation and weights are available in the [official repository](https://github.com/deepmodeling/Uni-Mol).
-- See [References and notices](references.md) for citations and license information.
+- See [References and notices](09-references.md) for citations and license information.
+
+**Next:** [CLI](./07-cli.md)

@@ -1,6 +1,10 @@
 # 模型、迁移与 FAQ
 
-**中文** | [English](../en/model-and-faq.md) · [返回主页](../../README.md#zh)
+**中文** | [English](../en/05-model-and-faq.md) · [返回主页](../../README.md#zh-cn)
+
+**层级：** 3 — 参考
+
+**前置条件：** [快速开始](./02-quickstart.md)。
 
 ## 模型 API
 
@@ -80,3 +84,5 @@ black .
 isort .
 flake8 .
 ```
+
+**下一页：** [预训练](./06-training.md)

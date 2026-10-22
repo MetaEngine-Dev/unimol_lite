@@ -1,6 +1,9 @@
 # Changelog
 
-本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 的组织方式。
+All notable changes to this project are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
@@ -8,6 +11,9 @@
 
 - 文档重构：README 改为中英双语主页，文档索引并入主页，移除 `docs/README.md` 与 `docs/zh|en/index.md`。
 - 项目元数据只保留 `authors`，移除 `maintainers`；README 统一使用“作者”。
+- 文档重构为编号式 `docs/{en,zh-CN}/`，增加语言索引页、每页 Level/Prerequisites/Next 与 `AGENTS.md`。
+- 新增 `AUTHORS`、`NOTICE`、`CITATION.cff`；README 改为英文优先的双语结构。
+- 包元数据改用 `license = { file = "LICENSE" }`，补充 classifiers、项目主页与 sdist 文件清单。
 
 ## [0.2.1] - 2026-10-22
 
@@ -22,7 +28,7 @@
 - 新增 `unimol_lite.training`：掩码原子预训练的数据变换、LMDB 数据集、PyTorch Lightning 模块与损失。
 - 新增 CLI：`unimol-lite prepare-lmdb`、`unimol-lite featurize`、`unimol-lite pretrain`、`unimol-lite selftest`。
 - 新增 `train` 可选依赖（`pytorch-lightning`、`pyyaml`、`safetensors`）。
-- 新增中英双语[预训练](docs/zh/training.md)、[命令行接口](docs/zh/cli.md)与[引用与声明](docs/zh/references.md)文档。
+- 新增中英双语[预训练](docs/zh-CN/06-training.md)、[命令行接口](docs/zh-CN/07-cli.md)与[引用与声明](docs/zh-CN/09-references.md)文档。
 
 ### Changed
 

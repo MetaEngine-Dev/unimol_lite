@@ -1,6 +1,10 @@
 # 命令行接口
 
-**中文** | [English](../en/cli.md) · [返回主页](../../README.md#zh)
+**中文** | [English](../en/07-cli.md) · [返回主页](../../README.md#zh-cn)
+
+**层级：** 3 — 参考
+
+**前置条件：** [快速开始](./02-quickstart.md)。
 
 安装后可直接使用 `unimol-lite` 命令；未安装时也可以用 `python -m unimol_lite.cli`。
 
@@ -98,7 +102,7 @@ unimol-lite pretrain \
 | `--resume` | 从 checkpoint 继续 |
 | `--quiet` | 不打印结束提示 |
 
-命令行参数优先于 YAML 中的同名项。训练细节、配置字段和输出结构见[预训练](training.md)。
+命令行参数优先于 YAML 中的同名项。训练细节、配置字段和输出结构见[预训练](06-training.md)。
 
 ## selftest
 
@@ -128,3 +132,5 @@ unimol-lite selftest --device cuda
 ```text
 unimol-lite: error: pretraining requires pytorch-lightning; install with '.[train]'
 ```
+
+**下一页：** [为什么只发代码](./08-why-code-only.md)

@@ -1,6 +1,10 @@
 # 预训练
 
-**中文** | [English](../en/training.md) · [返回主页](../../README.md#zh)
+**中文** | [English](../en/06-training.md) · [返回主页](../../README.md#zh-cn)
+
+**层级：** 2 — 使用
+
+**前置条件：** [特征化 API](./03-featurization.md)。
 
 本页说明如何使用 `unimol-lite` 在本地 3D 构象数据上做 Uni-Mol 风格的掩码原子预训练。实现参考了 [Uni-Mol 官方预训练代码](https://github.com/deepmodeling/Uni-Mol)，但不是官方实现，也不分发官方预训练权重。
 
@@ -44,7 +48,7 @@ unimol-lite prepare-lmdb \
 - `--coord-mode auto|3d|2d`：与 `smiles2unimolitem` 的含义一致；`auto` 对大分子可能使用 2D 坐标。
 - `--timeout`：每个构象的墙钟预算。
 - 解析失败或构象生成失败的分子默认**跳过**；加 `--keep-errors` 可以把错误行写入 LMDB，预训练数据集读取时会跳过空条目。
-- LMDB 中每个条目保存 `{"smiles": str, "item": {...}}`，`item` 的结构与[特征化 API](featurization.md)一致。
+- LMDB 中每个条目保存 `{"smiles": str, "item": {...}}`，`item` 的结构与[特征化 API](03-featurization.md)一致。
 - `--nproc 1` 使用串行模式，便于调试；多进程模式的进度条按行汇总。
 
 ## 2. 配置
@@ -174,4 +178,6 @@ unimol-lite selftest
 - 本实现聚焦「掩码原子 + 坐标/距离恢复」这一条预训练主线，不包含官方仓库里所有数据增广、2D conformer 组合和分布式训练配置。
 - 训练数据质量、构象生成设置和 RDKit 版本都会影响结果；换数据或升级 RDKit 后应重新生成 LMDB。
 - 本项目不是 Uni-Mol 官方版本，也不分发官方预训练权重。官方实现与权重见[官方仓库](https://github.com/deepmodeling/Uni-Mol)。
-- 引用与许可证信息见[引用与声明](references.md)。
+- 引用与许可证信息见[引用与声明](09-references.md)。
+
+**下一页：** [命令行接口](./07-cli.md)

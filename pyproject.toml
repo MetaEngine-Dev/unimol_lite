@@ -5,18 +5,23 @@ requires = ["hatchling>=1.18"]
 [project]
 name = "unimol_lite"
 version = "0.2.1"
-description = "Uni-Mol 轻量实现：SMILES 特征化、模型前向与掩码原子预训练"
+description = "Lightweight implementation of Uni-Mol for SMILES featurization, model inference and masked-atom pretraining"
 readme = "README.md"
-keywords = ["Uni-Mol", "Deep Learning"]
-license = { text = "MIT" }
+keywords = ["Uni-Mol", "SMILES", "molecular representation", "pretraining", "cheminformatics"]
+license = { file = "LICENSE" }
 authors = [
   { name = "Lvjun Guo", email = "gljx898989@163.com" },
   { name = "David Niteas", email = "david.ql.d@foxmail.com" },
 ]
 requires-python = ">=3.10,<3.12"
 classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11"
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Scientific/Engineering :: Bio-Informatics",
 ]
 dependencies = [
   "rdkit>=2025.9,<2026",
@@ -37,6 +42,7 @@ train = [
 ]
 dev = [
   "black>=24.0.0",
+  "build>=1.2",
   "pytest>=8.0.0",
   "pytest-cov>=4.1.0",
   "isort>=5.13.0",
@@ -45,6 +51,9 @@ dev = [
 
 [project.scripts]
 unimol-lite = "unimol_lite.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/MetaEngine-Dev/unimol_lite"
 
 [tool.hatch.build.targets.wheel]
 packages = ["unimol_lite"]
@@ -56,9 +65,14 @@ include = [
   "/benchmarks",
   "/examples",
   "/docs",
+  "/AGENTS.md",
   "/README.md",
   "/CHANGELOG.md",
   "/LICENSE",
+  "/AUTHORS",
+  "/NOTICE",
+  "/CITATION.cff",
+  "/Makefile",
 ]
 
 [tool.black]
