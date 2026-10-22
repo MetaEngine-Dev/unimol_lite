@@ -4,7 +4,7 @@ requires = ["hatchling>=1.18"]
 
 [project]
 name = "unimol_lite"
-version = "0.2.1"
+version = "0.2.2"
 description = "Lightweight implementation of Uni-Mol for SMILES featurization, model inference and masked-atom pretraining"
 readme = "README.md"
 keywords = ["Uni-Mol", "SMILES", "molecular representation", "pretraining", "cheminformatics"]

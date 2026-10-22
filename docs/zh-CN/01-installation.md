@@ -9,13 +9,13 @@
 ## 从 Git 安装
 
 ```shell
-python -m pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.2.1"
+python -m pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.2.2"
 ```
 
 已配置 SSH 密钥时，也可使用：
 
 ```shell
-python -m pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git@v0.2.1"
+python -m pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git@v0.2.2"
 ```
 
 `smiles2class` 以相同的 Python 范围依赖本库；组合安装时请使用 Python 3.10 或 3.11。

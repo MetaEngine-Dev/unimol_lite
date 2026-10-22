@@ -9,13 +9,13 @@
 ## Install from Git
 
 ```shell
-python -m pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.2.1"
+python -m pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.2.2"
 ```
 
 With an SSH key configured, the SSH URL can also be used:
 
 ```shell
-python -m pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git@v0.2.1"
+python -m pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git@v0.2.2"
 ```
 
 `smiles2class` uses this package with the same Python range. A combined install must use Python 3.10 or 3.11.
