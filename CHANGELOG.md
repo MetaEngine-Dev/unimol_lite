@@ -11,13 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- 文档重构：README 改为中英双语主页，文档索引并入主页，移除 `docs/README.md` 与 `docs/zh|en/index.md`。
-- 项目元数据只保留 `authors`，移除 `maintainers`；README 统一使用“作者”。
-- 文档重构为编号式 `docs/{en,zh-CN}/`，增加语言索引页、每页 Level/Prerequisites/Next 与 `AGENTS.md`。
-- 新增 `AUTHORS`、`NOTICE`、`CITATION.cff`；README 改为英文优先的双语结构。
-- 包元数据改用 `license = { file = "LICENSE" }`，补充 classifiers、项目主页与 sdist 文件清单。
-- 恢复 README 中的 Uni-Mol 论文引用，并把该引用加入 `CITATION.cff` 与 `NOTICE`。
-- 公开文档移除“内部工单/开发笔记”等内部过程表述，改为面向用户的“你需要自备”；移除公开 README 中的 CI 说明。
+- 文档重构为编号式 `docs/{en,zh-CN}/`，新增文档总览与语言索引页；每页带 Level/Prerequisites/Next。
+- README 改为英文优先的双语主页；恢复并突出 Uni-Mol 论文引用，并写入 `CITATION.cff` 与 `NOTICE`。
+- 新增 `AGENTS.md`、`AUTHORS`、`NOTICE`、`CITATION.cff` 与 `Makefile`。
+- 项目元数据只保留 `authors`，移除 `maintainers`；`license` 改为 LICENSE 文件，补充 classifiers、项目主页与 sdist 文件清单。
 - 统一 Python 版本说明为 `>=3.10,<3.12`，并注明与 `smiles2class` 的组合安装范围一致。
 
 ## [0.2.1] - 2026-10-22
