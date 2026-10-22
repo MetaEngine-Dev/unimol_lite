@@ -89,7 +89,7 @@ See [`AUTHORS`](./AUTHORS). What's shipped is described in [`NOTICE`](./NOTICE).
 
 ### License
 
-MIT. See [`LICENSE`](./LICENSE). Citation metadata is in [`CITATION.cff`](./CITATION.cff).
+MIT. See [`LICENSE`](./LICENSE). Citation metadata is in [`CITATION.cff`](./CITATION.cff); the Uni-Mol paper citation is in [Citation](#citation).
 
 ---
 
@@ -182,4 +182,27 @@ unimol-lite selftest
 
 ### 许可证
 
-MIT，见 [`LICENSE`](./LICENSE)。引用元数据见 [`CITATION.cff`](./CITATION.cff)。
+MIT，见 [`LICENSE`](./LICENSE)。引用元数据见 [`CITATION.cff`](./CITATION.cff)；Uni-Mol 论文引用见[引用](#citation)。
+
+---
+
+<a id="citation"></a>
+
+## 引用 / Citation
+
+使用本项目或派生工作时，应同时引用 Uni-Mol 原始论文。When using this project or derivative work, cite the original Uni-Mol paper:
+
+```bibtex
+@inproceedings{zhou2023unimol,
+  title     = {Uni-Mol: A Universal 3D Molecular Representation Learning Framework},
+  author    = {Gengmo Zhou and Zhifeng Gao and Qiankun Ding and Hang Zheng and Hongteng Xu and Zhewei Wei and Linfeng Zhang and Guolin Ke},
+  booktitle = {The Eleventh International Conference on Learning Representations},
+  year      = {2023},
+  url       = {https://openreview.net/forum?id=6K2RM6wVqKu}
+}
+```
+
+- OpenReview: <https://openreview.net/forum?id=6K2RM6wVqKu>
+- Paper: *Uni-Mol: A Universal 3D Molecular Representation Learning Framework*
+- Venue: ICLR 2023
+- Full notices: [English](docs/en/09-references.md) · [简体中文](docs/zh-CN/09-references.md)

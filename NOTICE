@@ -18,6 +18,12 @@ UniMol-Lite is not the official Uni-Mol release and is not maintained or
 endorsed by the Uni-Mol authors. The official implementation and weights are
 available at https://github.com/deepmodeling/Uni-Mol.
 
+Citation
+--------
+If you use this project, cite the Uni-Mol paper. The BibTeX entry is in
+README.md, and the full notices are in docs/en/09-references.md and
+docs/zh-CN/09-references.md.
+
 License
 -------
 MIT. See LICENSE.
