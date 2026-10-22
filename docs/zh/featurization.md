@@ -1,6 +1,6 @@
 # 特征化 API
 
-**中文** | [English](../en/featurization.md)
+**中文** | [English](../en/featurization.md) · [返回主页](../../README.md#zh)
 
 ## 总览
 
@@ -164,4 +164,4 @@ featurize_batch(
 
 ## 确定性
 
-随机性全部来自每次调用创建的局部 `np.random.RandomState`，不读写全局 `np.random` 状态；同一输入 + 同一种子在单线程/多线程下结果一致。结果绑定 RDKit 版本（当前验证版本 `2025.09.1`）；启用 `timeout` 时，同一分子在不同机器或不同负载下可能 3D 成功、也可能降级 2D。需要可复现输出时用 `timeout=None`，或按 `meta["status"]` 过滤降级行。
+随机性全部来自每次调用创建的局部 `np.random.RandomState`，不读写全局 `np.random` 状态；同一输入 + 同一种子在单线程/多线程下结果一致。结果绑定 RDKit 版本（已验证 `2025.09.1`）；启用 `timeout` 时，同一分子在不同机器或不同负载下可能 3D 成功、也可能降级 2D。需要可复现输出时用 `timeout=None`，或按 `meta["status"]` 过滤降级行。

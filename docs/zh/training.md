@@ -1,8 +1,8 @@
 # 预训练
 
-**中文** | [English](../en/training.md)
+**中文** | [English](../en/training.md) · [返回主页](../../README.md#zh)
 
-本页说明如何使用 `unimol-lite` 在自己的 3D 构象数据上做 Uni-Mol 风格的掩码原子预训练。实现参考了 [Uni-Mol 官方预训练代码](https://github.com/deepmodeling/Uni-Mol)，但不是官方实现，也不分发官方预训练权重。
+本页说明如何使用 `unimol-lite` 在本地 3D 构象数据上做 Uni-Mol 风格的掩码原子预训练。实现参考了 [Uni-Mol 官方预训练代码](https://github.com/deepmodeling/Uni-Mol)，但不是官方实现，也不分发官方预训练权重。
 
 ## 预训练目标
 
@@ -14,7 +14,7 @@ Uni-Mol 的预训练是一个掩码原子建模任务。每个分子先被转换
 | 掩码坐标 | 被选中原子的坐标加入噪声 | 原始坐标 | `5.0` |
 | 掩码距离 | 噪声坐标计算出的原子对距离 | 原始坐标的原子对距离 | `10.0` |
 
-另外保留 Uni-Mol 的 `x_norm` 与 pair 表示范数正则项，默认权重均为 `0.01`。这些权重都可以在配置文件中调整；本仓库不声称某组权重适用于所有数据。
+另外保留 Uni-Mol 的 `x_norm` 与 pair 表示范数正则项，默认权重均为 `0.01`。这些权重均可在配置文件中调整；默认值是一组通用起点，应按数据分布调整。
 
 ## 1. 准备数据
 
@@ -149,7 +149,7 @@ runs/pretrain/
     └── model.safetensors
 ```
 
-`pretrained/` 是 HuggingFace 风格的推理导出：`config.json` 中的 `mode` 会被写成 `infer`，可以直接用 `UniMolModel.from_pretrained("runs/pretrain/pretrained")` 加载并返回 `(encoder_rep, pair_rep)`。
+`pretrained/` 是 Hugging Face 风格的推理导出：`config.json` 中的 `mode` 会被写成 `infer`，可以直接用 `UniMolModel.from_pretrained("runs/pretrain/pretrained")` 加载并返回 `(encoder_rep, pair_rep)`。
 
 ```python
 from unimol_lite.model import UniMolModel
@@ -173,5 +173,5 @@ unimol-lite selftest
 
 - 本实现聚焦「掩码原子 + 坐标/距离恢复」这一条预训练主线，不包含官方仓库里所有数据增广、2D conformer 组合和分布式训练配置。
 - 训练数据质量、构象生成设置和 RDKit 版本都会影响结果；换数据或升级 RDKit 后应重新生成 LMDB。
-- 本仓库不是 Uni-Mol 官方版本，也不分发官方预训练权重。需要官方实现或权重时，请前往[官方仓库](https://github.com/deepmodeling/Uni-Mol)。
+- 本项目不是 Uni-Mol 官方版本，也不分发官方预训练权重。官方实现与权重见[官方仓库](https://github.com/deepmodeling/Uni-Mol)。
 - 引用与许可证信息见[引用与声明](references.md)。

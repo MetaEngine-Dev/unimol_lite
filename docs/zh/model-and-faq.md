@@ -1,6 +1,6 @@
 # 模型、迁移与 FAQ
 
-**中文** | [English](../en/model-and-faq.md)
+**中文** | [English](../en/model-and-faq.md) · [返回主页](../../README.md#zh)
 
 ## 模型 API
 
@@ -17,64 +17,54 @@ encoder_rep, pair_rep = model(**batch)
 
 ## use_3d 迁移
 
-`use_3d` 已弃用，仍可用但会发 `DeprecationWarning`：
+`use_3d` 仅作为兼容参数保留，使用时发出 `DeprecationWarning`。
 
 | 旧写法 | 新写法 |
 | --- | --- |
 | `smiles2unimolitem(smi, use_3d=False)` | `smiles2unimolitem(smi, coord_mode="auto")` |
 | `smiles2unimolitem(smi, use_3d=True)` | `smiles2unimolitem(smi, coord_mode="3d")` |
 
-同时显式传 `coord_mode` 时以 `coord_mode` 为准（不再看 `use_3d`）。
+同时传入 `coord_mode` 时以 `coord_mode` 为准，`use_3d` 被忽略。
 
-下游唯一现有调用点 `uni_classify/model_tools/system.py:41` 的对照：
+旧默认 `use_3d=True` 对所有分子使用 3D 坐标；`coord_mode="auto"` 对超过 400 个原子的分子使用 2D。需要超大分子的 3D 结果时，显式传入 `coord_mode="3d"`。
 
-```python
-# 迁移前
-unimolitem = smiles2unimolitem(smiles, use_3d=False)
-
-# 迁移后（行为一致：≤400 原子 3D，>400 原子 2D）
-unimolitem = smiles2unimolitem(smiles, coord_mode="auto")
-```
-
-> 注意：旧默认 `use_3d=True` 对所有尺寸走 3D，而 `coord_mode="auto"` 对 >400 原子走 2D。若原来依赖超大分子的 3D 结果，请显式写 `coord_mode="3d"`。
-
-若希望把调用点的 dask 进程池换成库内线程池，可用 `featurize_batch(smiles_list, workers=8, timeout=30.0)`（等长保序、逐项状态）。
+批量处理可使用 `featurize_batch(smiles_list, workers=8, timeout=30.0)`，返回结果与输入等长保序，并逐项给出状态。
 
 ## FAQ
 
-### 为什么我的分子变成了 degraded_2d？
+### `degraded_2d` 的成因
 
-3D 嵌入失败或超出 `timeout` 预算时，`on_timeout="fallback_2d"`（默认）会降级成 2D 坐标。长链脂类等柔性强、原子多的分子容易嵌入失败，这属于预期行为。可查看 `meta["reason"]` 区分 `timeout` / `embed_failed` / `mmff_failed`。
+3D 嵌入失败或超出 `timeout` 预算时，默认的 `on_timeout="fallback_2d"` 将坐标降级为 2D。长链脂类等柔性强、原子多的分子较易触发。`meta["reason"]` 可区分 `timeout`、`embed_failed` 与 `mmff_failed`。
 
-### 2D 结果能当成普通结果用吗？
+### 2D 结果的使用
 
-要谨慎。主模型按 3D 构象训练，2D 属于训练分布外输入；不要静默把 `degraded_2d` 当正常结果，应按 `meta["status"]` 过滤或降权。
+主模型按 3D 构象训练，2D 属于训练分布外输入。下游应按 `meta["status"]` 过滤 `degraded_2d`，或对这类结果降权。
 
-### 同一分子两次结果不一样？
+### 同一分子两次结果不一致
 
-- 检查 `timeout`：启用预算时，不同机器/负载下可能一次 3D、一次 2D。需要可复现时用 `timeout=None`。
+- 检查 `timeout`：启用预算时，不同机器或负载下可能一次 3D、一次 2D。需要严格可复现时使用 `timeout=None`。
 - 检查输入参数：`coord_mode`、`rng_seed`、`max_atoms`、`coord_pool_count` 是否一致。
-- 检查 RDKit 版本：坐标与构象绑定 RDKit 版本（当前验证 `2025.09.1`），升级可能改变结果。
+- 检查 RDKit 版本：坐标与构象绑定 RDKit 版本（已验证 `2025.09.1`），升级可能改变结果。
 
-### 升级 RDKit 会影响已有数据吗？
+### 升级 RDKit 的影响
 
-会。RDKit 版本变化可能改变构象生成与优化结果，进而改变张量。若下游依赖固定特征，请锁定版本并重跑已有数据。
+RDKit 版本变化可能改变构象生成与优化结果，进而改变张量。下游依赖固定特征时，应锁定版本并重新生成已有数据。
 
-### 批量结果里怎么过滤坏行？
+### 批量结果的坏行过滤
 
 ```python
 good = [(item, meta) for item, meta in results if item is not None and meta["status"] == "ok"]
 ```
 
-需要把降级 2D 也保留时，额外接受 `meta["status"] == "degraded_2d"`。
+需要同时保留降级 2D 时，额外接受 `meta["status"] == "degraded_2d"`。
 
-### 能用自己的进程池包 `smiles2unimolitem` 吗？
+### 与外部调度器集成
 
-可以，但通常没有必要：`featurize_batch` 已经内置线程池并处理了行对齐与状态。
+`smiles2unimolitem` 可以放入外部进程池，但通常没有必要：`featurize_batch` 已内置线程池，并处理行对齐与逐项状态。
 
-### 应该开多少线程？
+### 线程数
 
-从 `workers=8` 开始；收益取决于分子大小与机器，线程更多不一定更快。
+默认 `workers=min(8, cpu)`。收益取决于分子大小与硬件，增加线程不一定更快。
 
 ## 开发与测试
 
@@ -84,7 +74,6 @@ pip install -e ".[dev]"
 
 # 全量测试
 pytest tests/ -q
-# 94 passed, 1 skipped
 
 # 格式化与静态检查
 black .

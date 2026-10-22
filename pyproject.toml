@@ -5,14 +5,10 @@ requires = ["hatchling>=1.18"]
 [project]
 name = "unimol_lite"
 version = "0.2.1"
-description = "简化版Uni-Mol：特征化与预训练"
-readme = "readme.md"
+description = "Uni-Mol 轻量实现：SMILES 特征化、模型前向与掩码原子预训练"
+readme = "README.md"
 keywords = ["Uni-Mol", "Deep Learning"]
 license = { text = "MIT" }
-maintainers = [
-  { name = "Lvjun Guo", email = "gljx898989@163.com" },
-  { name = "David Niteas", email = "david.ql.d@foxmail.com" },
-]
 authors = [
   { name = "Lvjun Guo", email = "gljx898989@163.com" },
   { name = "David Niteas", email = "david.ql.d@foxmail.com" },
@@ -60,7 +56,7 @@ include = [
   "/benchmarks",
   "/examples",
   "/docs",
-  "/readme.md",
+  "/README.md",
   "/CHANGELOG.md",
   "/LICENSE",
 ]

@@ -1,15 +1,21 @@
 # Changelog
 
-本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 的组织方式，当前版本为 `0.2.1`。
+本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 的组织方式。
 
-## [0.2.1]
+## [Unreleased]
 
 ### Changed
 
-- 更正共同作者 Lvjun Guo 的联系邮箱为 `gljx898989@163.com`。
-- 更新公开仓库安装说明。
+- 文档重构：README 改为中英双语主页，文档索引并入主页，移除 `docs/README.md` 与 `docs/zh|en/index.md`。
+- 项目元数据只保留 `authors`，移除 `maintainers`；README 统一使用“作者”。
 
-## [0.2.0]
+## [0.2.1] - 2026-10-22
+
+### Changed
+
+- 安装说明指向 `v0.2.1`。
+
+## [0.2.0] - 2026-10-22
 
 ### Added
 
@@ -22,16 +28,16 @@
 
 - `UniMolConfig` 新增 `x_norm_loss` 字段。
 - 模型在无 padding 的单分子输入下也能计算坐标预训练分支。
-- 预训练导出为 HuggingFace 风格的 `pretrained/` 目录，`config.json` 的 `mode` 为 `infer`。
+- 预训练导出为 Hugging Face 风格的 `pretrained/` 目录，`config.json` 的 `mode` 为 `infer`。
 - 版本号更新为 `0.2.0`。
 
-## [0.1.1]
+## [0.1.1] - 2026-10-21
 
 ### Changed
 
-- 文档：清理面向用户的表述，统一安装与运行时说明。
+- 统一 README 与文档中的安装、运行时说明。
 
-## [0.1.0]
+## [0.1.0] - 2026-10-21
 
 ### Added
 

@@ -1,8 +1,8 @@
 # Command-line interface
 
-[中文](../zh/cli.md) | **English**
+[中文](../zh/cli.md) | **English** · [Documentation home](../../README.md#en)
 
-After installation, use the `unimol-lite` command. Without installation you can also run `python -m unimol_lite.cli`.
+After installation, use the `unimol-lite` command. Without installation, `python -m unimol_lite.cli` can be used instead.
 
 ```shell
 unimol-lite --help

@@ -1,6 +1,6 @@
 # Batch and runtime
 
-[中文](../zh/batch-and-runtime.md) | **English**
+[中文](../zh/batch-and-runtime.md) | **English** · [Documentation home](../../README.md#en)
 
 ## Batch semantics
 
@@ -28,16 +28,16 @@
 
 ## Timeouts and errors
 
-- The batch layer always calls the single-molecule API with `return_meta=True`, so a timeout under `on_timeout="error"` shows up as `status="timeout_error"` with `item=None` on that row. It **never aborts the batch**, and you never need to catch `FeaturizationTimeout`.
+- The batch layer always calls the single-molecule API with `return_meta=True`, so a timeout under `on_timeout="error"` shows up as `status="timeout_error"` with `item=None` on that row. It **never aborts the batch**, and does not require catching `FeaturizationTimeout`.
 - `on_timeout="skip"` yields `status="skipped"`; `fallback_2d` yields `status="degraded_2d"` and still returns an `item`.
 - Invalid SMILES yield `status="invalid"`; unexpected exceptions yield `status="error"` with the exception type as `reason`.
 - Per-row isolation means **the result list can contain rows with `item=None`**: downstream code must filter on `meta["status"]`.
 
 ## Runtime
 
-- The default is `workers=min(8, cpu)`; tune threads for your hardware and molecule mix;
+- The default is `workers=min(8, cpu)`; the thread count depends on hardware and molecule mix;
 - Large molecules may fall back to 2D when 3D embedding fails (`status="degraded_2d"`);
-- Public docs do not report benchmark conclusions; `benchmarks/bench_featurize.py` can be run locally to measure your own environment.
+- Runtime depends on hardware, molecule type and thread count; run `benchmarks/bench_featurize.py` locally to measure it.
 
 ## Determinism boundaries
 
@@ -48,5 +48,5 @@
 ## When to use the batch layer
 
 - Large datasets with variable per-molecule cost (long-chain lipids and other hard-to-embed molecules) benefit from `featurize_batch(..., timeout=30.0)`, which keeps a bad molecule from stalling the whole run.
-- When you need per-row auditing (which molecules degraded to 2D, which failed to parse), `meta` already answers it — no hand-written try/except needed.
-- For a handful of molecules, or when the caller already has its own scheduler, call `smiles2unimolitem` directly.
+- For per-row auditing (which molecules degraded to 2D, which failed to parse), `meta` provides the status without additional exception handling.
+- For a small number of molecules, or when the caller already has a scheduler, call `smiles2unimolitem` directly.

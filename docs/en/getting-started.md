@@ -1,6 +1,6 @@
 # Getting started
 
-[中文](../zh/getting-started.md) | **English**
+[中文](../zh/getting-started.md) | **English** · [Documentation home](../../README.md#en)
 
 ## Requirements
 
@@ -13,7 +13,7 @@
 pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.2.1"
 ```
 
-Maintainers can use SSH:
+With an SSH key configured, the SSH URL can also be used:
 
 ```shell
 pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git@v0.2.1"
@@ -58,6 +58,11 @@ Results are **the same length as the input and in input order**: an invalid SMIL
 
 ```shell
 pytest tests/ -q
-# 94 passed, 1 skipped
 ```
+
+## Next steps
+
+- Full signatures and the status model: [Featurization API](featurization.md)
+- Batch parallelism and runtime: [Batch and runtime](batch-and-runtime.md)
+- Model loading and migration: [Model, migration and FAQ](model-and-faq.md)
 

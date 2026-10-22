@@ -1,6 +1,6 @@
 # 命令行接口
 
-**中文** | [English](../en/cli.md)
+**中文** | [English](../en/cli.md) · [返回主页](../../README.md#zh)
 
 安装后可直接使用 `unimol-lite` 命令；未安装时也可以用 `python -m unimol_lite.cli`。
 

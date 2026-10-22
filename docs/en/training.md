@@ -1,8 +1,8 @@
 # Pretraining
 
-[中文](../zh/training.md) | **English**
+[中文](../zh/training.md) | **English** · [Documentation home](../../README.md#en)
 
-This page shows how to run Uni-Mol-style masked-atom pretraining with `unimol-lite` on your own 3D conformers. The implementation follows the [official Uni-Mol pretraining code](https://github.com/deepmodeling/Uni-Mol) as a reference, but it is not the official implementation and does not distribute official pretrained weights.
+This page shows how to run Uni-Mol-style masked-atom pretraining with `unimol-lite` on local 3D conformer data. The implementation follows the [official Uni-Mol pretraining code](https://github.com/deepmodeling/Uni-Mol) as a reference, but it is not the official implementation and does not distribute official pretrained weights.
 
 ## Pretraining objectives
 
@@ -14,7 +14,7 @@ Uni-Mol pretraining is a masked-atom modeling task. Each molecule is first conve
 | Masked coordinate | Noise is added to selected atoms that are not left unchanged | Original coordinates | `5.0` |
 | Masked distance | Pair distances computed from noisy coordinates | Pair distances of the original coordinates | `10.0` |
 
-The Uni-Mol `x_norm` and pair-representation norm regularizers are kept as well, both with a default weight of `0.01`. All weights are configurable; this repository does not claim that one setting is appropriate for every dataset.
+The Uni-Mol `x_norm` and pair-representation norm regularizers are kept as well, both with a default weight of `0.01`. All weights are configurable; the defaults are a general starting point and should be adjusted for the dataset.
 
 ## 1. Prepare data
 
@@ -100,7 +100,7 @@ trainer:
 | `noise_type` | `uniform`, `normal`, `trunc_normal` or `none` |
 | `noise` | Coordinate noise scale; `uniform` samples each coordinate from `[-noise, noise]`; selected atoms left unchanged are not perturbed |
 
-> The default `0.05 + 0.05` means roughly 90% of selected atoms use `[MASK]`, not the 80/10/10 split often used by BERT. Change the configuration if you need a different ratio.
+> The default `0.05 + 0.05` means roughly 90% of selected atoms use `[MASK]`, not the 80/10/10 split often used by BERT. A different ratio requires a configuration change.
 
 ## 3. Start pretraining
 
@@ -149,7 +149,7 @@ runs/pretrain/
     └── model.safetensors
 ```
 
-`pretrained/` is a HuggingFace-style inference export: `config.json` is written with `mode` set to `infer`, and `UniMolModel.from_pretrained("runs/pretrain/pretrained")` returns `(encoder_rep, pair_rep)`.
+`pretrained/` is a Hugging Face-style inference export: `config.json` is written with `mode` set to `infer`, and `UniMolModel.from_pretrained("runs/pretrain/pretrained")` returns `(encoder_rep, pair_rep)`.
 
 ```python
 from unimol_lite.model import UniMolModel
@@ -173,5 +173,5 @@ It featurizes `CCO`, builds a temporary 1-layer, 32-dimensional model, computes 
 
 - This implementation focuses on the main "masked atoms + coordinate/distance recovery" pretraining path. It does not include every augmentation, 2D-conformer combination or distributed-training setting from the official repository.
 - Data quality, conformer settings and the RDKit version all affect results; regenerate the LMDB after changing data or upgrading RDKit.
-- This repository is not the official Uni-Mol release and does not distribute official pretrained weights. For the official implementation and weights, see the [official repository](https://github.com/deepmodeling/Uni-Mol).
+- This project is not the official Uni-Mol release and does not distribute official pretrained weights. The official implementation and weights are available in the [official repository](https://github.com/deepmodeling/Uni-Mol).
 - See [References and notices](references.md) for citations and license information.

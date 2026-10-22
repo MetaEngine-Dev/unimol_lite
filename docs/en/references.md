@@ -1,19 +1,19 @@
 # References and notices
 
-[中文](../zh/references.md) | **English**
+[中文](../zh/references.md) | **English** · [Documentation home](../../README.md#en)
 
 ## Relationship to official Uni-Mol
 
-`unimol_lite` is an independent third-party implementation. It is **not** the official Uni-Mol release, and it is not maintained or endorsed by the Uni-Mol authors. It keeps a lightweight path for SMILES featurization, model inference and masked-atom pretraining so that you can experiment with local data and build on it.
+`unimol_lite` is an independent third-party implementation. It is **not** the official Uni-Mol release, and it is not maintained or endorsed by the Uni-Mol authors. It keeps a lightweight path for SMILES featurization, model inference and masked-atom pretraining, intended for local experiments and secondary development.
 
-If you need the official implementation, official pretrained weights, official downstream tools or official support, use the upstream repository:
+The official implementation, pretrained weights, downstream tools and support are available upstream:
 
 - Official repository: <https://github.com/deepmodeling/Uni-Mol>
 - Official toolkit: <https://github.com/deepmodeling/Uni-Mol/tree/main/unimol_tools>
 
 ## Citation
 
-If you use this code or build on it, please also cite the original Uni-Mol paper:
+When using this project or derivative work, cite the original Uni-Mol paper:
 
 ```bibtex
 @inproceedings{zhou2023unimol,
@@ -33,4 +33,4 @@ If you use this code or build on it, please also cite the original Uni-Mol paper
 
 - `unimol_lite` is released under the **MIT License**; the full text is in [`LICENSE`](../../LICENSE) at the repository root.
 - Upstream [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) is also MIT-licensed. Parts of this project's implementation and interfaces reference the upstream code and documentation.
-- This repository does not distribute official Uni-Mol pretrained weights or data covered by separate terms. If you download weights or data separately, follow the license and usage terms of their source.
+- This project does not distribute official Uni-Mol pretrained weights or data covered by separate terms. Weights or data downloaded separately remain subject to their source terms.

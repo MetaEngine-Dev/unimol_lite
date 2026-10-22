@@ -1,6 +1,6 @@
 # 批量与运行时
 
-**中文** | [English](../en/batch-and-runtime.md)
+**中文** | [English](../en/batch-and-runtime.md) · [返回主页](../../README.md#zh)
 
 ## 批量语义
 
@@ -35,18 +35,18 @@
 
 ## 运行时
 
-- 默认 `workers=min(8, cpu)`；线程数需要按机器与分子类型自行选择；
+- 默认 `workers=min(8, cpu)`；线程数取决于硬件与分子类型；
 - 大分子可能因 3D 构象生成失败而自动降级 2D（`status="degraded_2d"`）；
-- 公开文档不提供性能基准结论；`benchmarks/bench_featurize.py` 可在本地运行，用于测量自己的环境。
+- 耗时取决于硬件、分子类型与线程数；可在本机运行 `benchmarks/bench_featurize.py` 测量。
 
 ## 确定性边界
 
 - 同一输入与种子在串行/多线程下结果一致；
-- 结果依赖 RDKit 版本（验证版本 `2025.09.1`）；
+- 结果依赖 RDKit 版本（已验证 `2025.09.1`）；
 - 启用 `timeout` 时，慢机器上可能降级 2D；需要严格可复现时用 `timeout=None`，或按 `meta["status"]` 过滤。
 
-## 何时用批量层
+## 何时使用批量层
 
-- 数据量大、单分子耗时波动大（含长链脂类等易嵌入失败的分子）时，`featurize_batch(..., timeout=30.0)` 能保证坏分子不拖垮整批。
-- 需要逐行审计（哪些分子降级 2D、哪些解析失败）时，`meta` 已经给出答案，不必自己包 try/except。
-- 只有很少几个分子、或调用方已有自己的调度器时，直接调 `smiles2unimolitem` 即可。
+- 数据量大、单分子耗时波动大（含长链脂类等易嵌入失败的分子）时，`featurize_batch(..., timeout=30.0)` 可避免单个坏分子阻塞整批。
+- 需要逐行审计（哪些分子降级 2D、哪些解析失败）时，`meta` 已给出状态，无需额外捕获异常。
+- 分子数量很少，或调用方已有调度器时，可直接调用 `smiles2unimolitem`。

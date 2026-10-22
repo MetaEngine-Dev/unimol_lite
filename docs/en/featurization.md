@@ -1,6 +1,6 @@
 # Featurization API
 
-[中文](../zh/featurization.md) | **English**
+[中文](../zh/featurization.md) | **English** · [Documentation home](../../README.md#en)
 
 ## Overview
 
@@ -154,7 +154,7 @@ Returns `list[(item | None, meta)]`, the same length as the input and in input o
 | `skipped` | timeout with `on_timeout="skip"` | `None` |
 | `error` | unexpected exception caught by the batch layer | `None` |
 
-- `coord_mode`: the mode actually used (`"2d"` after degradation); `None` when the SMILES could not be parsed (unless you passed `"3d"` / `"2d"` explicitly, in which case that value is reported). This is the **actual** mode, not the requested one.
+- `coord_mode`: the mode actually used (`"2d"` after degradation); `None` when the SMILES could not be parsed (unless `"3d"` / `"2d"` was passed explicitly, in which case that value is reported). This is the **actual** mode, not the requested one.
 - `reason`: `timeout` / `embed_failed` / `mmff_failed` / `parse_failed` / an exception type name.
 - `elapsed_s`: wall-clock time for this call, in seconds.
 

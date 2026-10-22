@@ -1,6 +1,6 @@
 # 快速开始
 
-**中文** | [English](../en/getting-started.md)
+**中文** | [English](../en/getting-started.md) · [返回主页](../../README.md#zh)
 
 ## 环境要求
 
@@ -13,7 +13,7 @@
 pip install "git+https://github.com/MetaEngine-Dev/unimol_lite.git@v0.2.1"
 ```
 
-维护者使用 SSH 安装时：
+已配置 SSH 密钥时，也可使用：
 
 ```shell
 pip install "git+ssh://git@github.com/MetaEngine-Dev/unimol_lite.git@v0.2.1"
@@ -52,12 +52,17 @@ for smi, (item, meta) in zip(smiles_list, results):
     print(smi, "->", meta["status"], shape)
 ```
 
-批量结果与输入**等长保序**：非法 SMILES 只影响自己那一行（`status="invalid"`），不会中断整批。语义细节见[批量与运行时](batch-and-runtime.md)。
+批量结果与输入**等长保序**：非法 SMILES 只影响该行（`status="invalid"`），不会中断整批。语义细节见[批量与运行时](batch-and-runtime.md)。
 
 ## 运行测试
 
 ```shell
 pytest tests/ -q
-# 94 passed, 1 skipped
 ```
+
+## 下一步
+
+- 全部函数签名与状态模型：[特征化 API](featurization.md)
+- 批量并行与运行时：[批量与运行时](batch-and-runtime.md)
+- 模型加载与迁移：[模型、迁移与 FAQ](model-and-faq.md)
 
