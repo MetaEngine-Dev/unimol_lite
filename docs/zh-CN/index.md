@@ -15,6 +15,8 @@ UniMol-Lite 是 [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) 的轻量实�
 | 加载模型或迁移 `use_3d` | [模型、迁移与 FAQ](./05-model-and-faq.md) |
 | 跑掩码原子预训练 | [预训练](./06-training.md) |
 | 查命令参数 | [命令行接口](./07-cli.md) |
+| 理解解决方案四层结构 | [四层结构](./10-solution-layers.md) |
+| 读写 parquet-block 数据集 | [数据容器](./11-dataspec.md) |
 | 查官方关系、引用与许可 | [引用与声明](./09-references.md) |
 
 ## 怎么读这些文档

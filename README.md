@@ -25,6 +25,8 @@ The docs are ordered by how deep you want to go:
 | Load a model or migrate from `use_3d` | [Model, migration and FAQ](docs/en/05-model-and-faq.md) |
 | Run masked-atom pretraining | [Pretraining](docs/en/06-training.md) |
 | Look up a command | [CLI](docs/en/07-cli.md) |
+| Understand the solution layers (L1–L4) | [Solution layers](docs/en/10-solution-layers.md) |
+| Work with parquet-block datasets | [Data containers](docs/en/11-dataspec.md) |
 | Understand why only code is shipped | [Why code-only](docs/en/08-why-code-only.md) |
 | Check citation and license | [References and notices](docs/en/09-references.md) |
 
@@ -38,6 +40,38 @@ The repository does not ship official Uni-Mol weights or training data. To get m
 - Single-molecule and batch featurization with per-row status
 - `UniMolModel` forward API and Hugging Face-style export/load
 - Masked-atom pretraining and a CLI (`prepare-lmdb`, `featurize`, `pretrain`, `selftest`)
+
+### Four-layer structure
+
+The library is a solution, not just a model. Four layers, one direction of
+dependency (L4 → L3 → L1, L2 → L1; applications call L3 only):
+
+| Layer | What it defines | Entry points |
+| --- | --- | --- |
+| **1 Architecture** | network + config | `unimol_lite.model`: `UniMolModel`, `UniMolConfig`, `UniMolTokenizer` |
+| **2 Training** | masked-atom pretraining | `unimol_lite.training` + `unimol-lite pretrain` (needs the `train` extra) |
+| **3 Standard calls** | the contract applications use | `unimol_lite.api`: `featurize`, `featurize_batch`, `build_model`, `load_model`, `forward_features`; data I/O in `unimol_lite.dataspec` (needs the `dataspec` extra) |
+| **4 Minimal use** | the shortest end-to-end path | [`examples/minimal_features.py`](./examples/minimal_features.py) |
+
+**Responsibility boundary.** This library produces *molecule features*
+(pre-alignment): atom-level encoder states plus pair states. It applies no
+LayerNorm to make a vector comparable with spectra and does not touch spectra —
+that cross-modal alignment step belongs to the solution package that consumes it.
+
+Shortest path (random weights unless you pass an exported model):
+
+```python
+from unimol_lite import build_model, featurize, forward_features
+
+model = build_model({"encoder_layers": 1, "encoder_embed_dim": 32, "encoder_ffn_embed_dim": 64,
+                     "encoder_attention_heads": 4, "max_seq_len": 32})
+item = featurize("CCO")
+encoder_rep, pair_rep = forward_features(model, item)
+print(encoder_rep.shape, pair_rep.shape)   # (1, L, 32) (1, L, L, 4)
+```
+
+Read [Solution layers](docs/en/10-solution-layers.md) for the full contract tables
+and [Data containers](docs/en/11-dataspec.md) for the parquet-block dataset format.
 
 ### No data or model files
 
@@ -120,6 +154,8 @@ UniMol-Lite 是 [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) 的轻量实�
 | 加载模型或迁移 `use_3d` | [模型、迁移与 FAQ](docs/zh-CN/05-model-and-faq.md) |
 | 跑掩码原子预训练 | [预训练](docs/zh-CN/06-training.md) |
 | 查命令参数 | [命令行接口](docs/zh-CN/07-cli.md) |
+| 理解解决方案四层结构（L1–L4） | [四层结构](docs/zh-CN/10-solution-layers.md) |
+| 使用 parquet-block 数据集 | [数据容器](docs/zh-CN/11-dataspec.md) |
 | 理解为什么只发代码 | [为什么只发代码](docs/zh-CN/08-why-code-only.md) |
 | 查引用与许可 | [引用与声明](docs/zh-CN/09-references.md) |
 
@@ -133,6 +169,33 @@ UniMol-Lite 是 [Uni-Mol](https://github.com/deepmodeling/Uni-Mol) 的轻量实�
 - 单分子与批量特征化，逐行状态
 - `UniMolModel` 前向 API 与 Hugging Face 风格导出/加载
 - 掩码原子预训练与 CLI（`prepare-lmdb`、`featurize`、`pretrain`、`selftest`）
+
+### 四层结构
+
+本库是解决方案，不只是一个模型。四层，单向依赖（L4 → L3 → L1，L2 → L1；应用层只调 L3）：
+
+| 层 | 定义什么 | 入口 |
+| --- | --- | --- |
+| **1 架构** | 网络与配置 | `unimol_lite.model`：`UniMolModel`、`UniMolConfig`、`UniMolTokenizer` |
+| **2 训练** | 掩码原子预训练 | `unimol_lite.training` + `unimol-lite pretrain`（需 `train` 可选依赖） |
+| **3 标准调用** | 应用使用的契约 | `unimol_lite.api`：`featurize`、`featurize_batch`、`build_model`、`load_model`、`forward_features`；数据 I/O 在 `unimol_lite.dataspec`（需 `dataspec` 可选依赖） |
+| **4 最简使用** | 最短端到端路径 | [`examples/minimal_features.py`](./examples/minimal_features.py) |
+
+**职责边界。** 本库产出的是**分子特征**（pre-alignment）：原子级编码器状态与对状态。它不施加 LayerNorm 去让向量可与谱图比较，也不处理谱图——那一步跨模态对齐属于消费它的解决方案包。
+
+最短路径（不传导出模型时是随机权重）：
+
+```python
+from unimol_lite import build_model, featurize, forward_features
+
+model = build_model({"encoder_layers": 1, "encoder_embed_dim": 32, "encoder_ffn_embed_dim": 64,
+                     "encoder_attention_heads": 4, "max_seq_len": 32})
+item = featurize("CCO")
+encoder_rep, pair_rep = forward_features(model, item)
+print(encoder_rep.shape, pair_rep.shape)   # (1, L, 32) (1, L, L, 4)
+```
+
+完整契约表见[解决方案四层结构](docs/zh-CN/10-solution-layers.md)，parquet-block 数据集格式见[数据容器](docs/zh-CN/11-dataspec.md)。
 
 ### 没有数据或模型文件
 

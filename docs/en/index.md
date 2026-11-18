@@ -15,6 +15,8 @@ UniMol-Lite is a lightweight implementation of [Uni-Mol](https://github.com/deep
 | Load a model or migrate from `use_3d` | [Model, migration and FAQ](./05-model-and-faq.md) |
 | Run masked-atom pretraining | [Pretraining](./06-training.md) |
 | Look up a command | [CLI](./07-cli.md) |
+| Understand the four solution layers | [Solution layers](./10-solution-layers.md) |
+| Read or write parquet-block datasets | [Data containers](./11-dataspec.md) |
 | Check official relationship, citation and license | [References and notices](./09-references.md) |
 
 ## How to read these docs

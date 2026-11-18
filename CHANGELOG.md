@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- 四层解决方案结构：文档（`docs/{en,zh-CN}/10-solution-layers.md`）与顶层导出面按 L1 架构 / L2 训练 / L3 标准调用 / L4 最简使用分组；新增职责边界声明（本库产出分子特征 pre-alignment，跨模态对齐不属本库）。
+- 新增 `unimol_lite.api` 标准调用面：`featurize`（与批量入口共享 `timeout=30.0` 默认与失败语义）、`featurize_batch`、`build_model`、`load_model`、`forward_features`（返回 `(encoder_rep, pair_rep)`，无梯度、自动 eval、拒绝训练态模型）。
+- 新增 `unimol_lite.dataspec`：SMS-DataSpec（`spec_version=1.0.0`）parquet-block 容器的独立实现——三表契约、分块写/批式读、envelope 与契约指纹、`smiles`/`pregenerated` 两种分子记录类型、content-hash / smiles_hash / inchikey_skeleton、一致性校验器与 C1–C8 测试套件。需要新增可选依赖 `dataspec`（polars + pyarrow）；预训练 LMDB 保持上游格式豁免。
+- 新增 L4 示例 `examples/minimal_features.py`（加载/构建模型 → 特征化 → 前向）与 `examples/container_records.py`（容器写入 → 校验 → 读取）。
+
+### Changed
+
+- 顶层 `unimol_lite.__all__` 按层重排并新增 L1/L3 导出；既有导入路径（`unimol_lite.data`、`unimol_lite.batch`、`unimol_lite.model`）保持不变。
+
 ## [0.2.2] - 2026-10-22
 
 ### Changed

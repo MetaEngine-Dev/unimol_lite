@@ -128,6 +128,7 @@ encoder_rep, pair_rep = model(**batch)
 | Error | Fix |
 |---|---|
 | `ModuleNotFoundError: pytorch_lightning` | `python -m pip install -e ".[train]"` |
+| `ModuleNotFoundError: polars` / `pyarrow` (only `unimol_lite.dataspec`) | `python -m pip install -e ".[dataspec]"` |
 | `ModuleNotFoundError: rdkit` | Reinstall the base package; check Python 3.10/3.11 |
 | CLI not found | `python -m pip install -e .` |
 
