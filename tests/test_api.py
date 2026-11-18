@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import pytest
 import torch
-
 import unimol_lite
 from unimol_lite import api
 from unimol_lite.data import smiles2unimolitem
