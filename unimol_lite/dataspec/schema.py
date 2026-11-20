@@ -100,7 +100,7 @@ TABLE_SCHEMAS: dict[str, pl.Schema] = {
 
 #: Record kind flag; absent in foreign containers (treated as ``"smiles"``).
 UNIMOL_KIND_COLUMN = "unimol_kind"
-#: Heavy-atom symbols including hydrogens, as produced by featurization.
+#: Atom symbols including hydrogens, as produced by featurization (docs/en/11-dataspec.md).
 UNIMOL_ATOMS_COLUMN = "unimol_atoms"
 #: Flattened ``x, y, z, ...`` coordinates, ``len == 3 * len(atoms)``.
 UNIMOL_COORDS_COLUMN = "unimol_coords"

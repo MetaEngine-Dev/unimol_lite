@@ -121,6 +121,15 @@ class TestForwardFeatures:
         encoder_rep, _ = api.forward_features(tiny_model, api.featurize("CCO"))
         assert not encoder_rep.requires_grad
 
+    def test_single_and_batched_agree_on_unpadded_region(self, tiny_model):
+        """P3-e：单条前向 vs 批量前向的非 pad 区域逐位 allclose（padding 不泄漏进有效区）。"""
+        item = api.featurize("CCO")
+        items = [item, api.featurize("c1ccccc1O")]
+        single, _ = api.forward_features(tiny_model, item)
+        batched, _ = api.forward_features(tiny_model, items)
+        true_len = item["src_tokens"].shape[0]
+        assert torch.allclose(single[0, :true_len], batched[0, :true_len], atol=1e-5)
+
 
 class TestModelEntryPoints:
     def test_build_model_is_evaluating(self):

@@ -19,7 +19,6 @@ from helpers import (
     patch_envelope,
     rewrite_table,
 )
-
 from unimol_lite.dataspec import (
     ConformanceReport,
     validate_container,
@@ -180,6 +179,48 @@ class TestSpectraRowBreaks:
         tampered = bundle.spectra.with_columns(pl.Series("hash_mode", ["md5", "content_hash", "content_hash"]))
         rewrite_table(bundle.root, TABLE_SPECTRA, tampered)
         assert "spectra.hash_mode_invalid" in validate_container(bundle.root).codes()
+
+    def test_nan_peak_is_reported_for_splash_keys(self, make_container):
+        """P3-a：NaN/Inf 峰在 splash 分支同样报 peaks_invalid（不再透传逃逸）。"""
+        bundle = make_container(name="nan-peaks")
+        tampered = bundle.spectra.with_columns(
+            pl.Series("peaks_intensity", [[float("nan"), 1.0, 2.0], [1.0], [1.0]])
+        )
+        rewrite_table(bundle.root, TABLE_SPECTRA, tampered)
+        report = validate_container(bundle.root)
+        assert "spectra.peaks_invalid" in report.codes()
+
+    def test_inf_mz_is_reported_for_content_hash_keys(self, make_container):
+        """P3-a：Inf m/z 在 content_hash 分支报 peaks_invalid（哈希重算前的有限性门）。"""
+        bundle = make_container(name="inf-mz")
+        tampered = bundle.spectra.with_columns(
+            pl.Series("peaks_mz", [[float("inf"), 2.0], [1.0], [1.0]])
+        )
+        rewrite_table(bundle.root, TABLE_SPECTRA, tampered)
+        report = validate_container(bundle.root)
+        assert "spectra.peaks_invalid" in report.codes()
+
+    def test_null_intensity_normalized(self, make_container):
+        """P3-d：intensity_normalized 空值 → spectra.intensity_normalized_null。"""
+        bundle = make_container(name="null-intensity-flag")
+        rows = bundle.spectra.height
+        tampered = bundle.spectra.with_columns(
+            pl.Series("intensity_normalized", [None] * rows, dtype=pl.Boolean)
+        )
+        rewrite_table(bundle.root, TABLE_SPECTRA, tampered)
+        assert "spectra.intensity_normalized_null" in validate_container(bundle.root).codes()
+
+    def test_illegal_shuffle_strategy(self, make_container, make_meta):
+        """P3-d：envelope.shuffle_strategy 非法值 → 拒绝容器（fail-closed）。
+
+        分层防御实测：unimol_lite 的 envelope 模型对 shuffle_strategy 做枚举校验，
+        非法值在读侧 ``envelope.invalid``（pydantic 校验）即被拒——conformance 的
+        ``envelope.shuffle_strategy_invalid`` 专用检查为冗余内门（仅当校验器被
+        直接喂跳过 envelope 校验的 meta 时可达）。本用例钉住拒绝行为。
+        """
+        bundle = make_container(name="bad-shuffle", meta=make_meta(shuffle_strategy="bogus"))
+        assert "envelope.invalid" in validate_container(bundle.root).codes()
+        assert not validate_container(bundle.root).ok
 
 
 class TestUnimolExtensionBreaks:

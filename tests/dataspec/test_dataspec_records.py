@@ -17,7 +17,6 @@ pytest.importorskip("polars")
 pytest.importorskip("pyarrow")
 
 from helpers import INCHIKEY_ETHANOL, INCHIKEY_PHENOL, spectra_frame
-
 from unimol_lite.dataspec import (
     KIND_PREGENERATED,
     KIND_SMILES,
@@ -170,6 +169,14 @@ class TestWriteAndRead:
         records = list(iter_records(bundle.root))
         assert [record[UNIMOL_KIND_COLUMN] for record in records] == [KIND_SMILES, KIND_SMILES]
         assert [record["molecule_key"] for record in records] == [INCHIKEY_PHENOL, INCHIKEY_ETHANOL]
+
+    def test_kind_filter_on_container_without_kind_column_is_refused(self, tmp_path, make_container):
+        """P3-b：kind=pregenerated 过滤缺 unimol_kind 列的容器 → 显式 ValueError（不静默零行）。"""
+        bundle = make_container(name="foreign-pregenerated")
+        with pytest.raises(ValueError, match="unimol_kind"):
+            list(iter_records(bundle.root, kind=KIND_PREGENERATED))
+        # kind="smiles"（默认语义）在缺列容器上仍合法——全部行默认 smiles
+        assert len(list(iter_records(bundle.root, kind=KIND_SMILES))) == 2
 
     def test_duplicate_keys_are_refused_on_write(self, tmp_path, ethanol_record):
         root = tmp_path / "dup.msdata"

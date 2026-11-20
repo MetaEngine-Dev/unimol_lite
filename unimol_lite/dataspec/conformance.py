@@ -22,6 +22,7 @@ than silently passing:
 from __future__ import annotations
 
 import json
+import math
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Literal, Optional
@@ -383,6 +384,11 @@ def _validate_spectra(
             continue
         if max(intensity) <= 0:
             collector.error("spectra.peaks_invalid", TABLE_SPECTRA, f"峰列表非法（最大强度 ≤ 0）（{key!r}）")
+            continue
+        if not (all(math.isfinite(v) for v in mz) and all(math.isfinite(v) for v in intensity)):
+            # P3-a：NaN/Inf 峰对 SPLASH 与 content_hash 都不可哈希——splash 分支此前
+            # 直接透传逃逸，现与 content_hash 分支同口径报违规（对齐金标准行为）。
+            collector.error("spectra.peaks_invalid", TABLE_SPECTRA, f"峰列表含 NaN/Inf（{key!r}）")
             continue
         if mode == HASH_MODE_SPLASH:
             unverified += 1

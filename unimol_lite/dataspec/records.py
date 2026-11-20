@@ -53,6 +53,7 @@ from .schema import (
     MOLECULE_RECORD_SCHEMA,
     SCHEMA_VERSION,
     SPEC_VERSION,
+    TABLE_MOLECULES,
     UNIMOL_ATOMS_COLUMN,
     UNIMOL_COORD_MODE_COLUMN,
     UNIMOL_COORDS_COLUMN,
@@ -333,6 +334,15 @@ def iter_records(
     if kind is not None and kind not in KINDS:
         raise ValueError(f"未知记录类型: {kind!r}（可选 {list(KINDS)}）")
     container = DataSpecContainer(root)
+    # P3-b：kind 过滤依赖 unimol_kind 列——容器缺列时所有行都会默认成 smiles，
+    # kind="pregenerated" 的过滤会**静默零行**。显式拒绝而不是静默空转。
+    if kind is not None and kind != KIND_SMILES:
+        schema_names = container.scan(TABLE_MOLECULES).collect_schema().names()
+        if UNIMOL_KIND_COLUMN not in schema_names:
+            raise ValueError(
+                f"容器缺 {UNIMOL_KIND_COLUMN!r} 列，无法按 kind={kind!r} 过滤"
+                "（过滤将静默零行）——请用 kind=None 读取或换带扩展列的容器"
+            )
     for batch in container.iter_molecules_batches(batch_rows):
         if columns is not None:
             selected = [name for name in columns if name in batch.columns]
